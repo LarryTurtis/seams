@@ -1,0 +1,1 @@
+SEAMS is a basic CMS that uses Angular, Node.js, and MongoDB.

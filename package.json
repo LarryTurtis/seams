@@ -1,0 +1,12 @@
+{
+  "name": "seams",
+  "version": "0.0.0",
+  "description": "A basic CMS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GaryKertis/seams.git"
+  },
+  "dependencies": {
+    "mongodb": "2.0.42"
+  }
+}
