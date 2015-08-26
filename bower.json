@@ -1,0 +1,7 @@
+{
+    "name": "seams",
+    "version": "0.0.0",
+    "dependencies": {
+        "angularjs-cart": "git://github.com/GaryKertis/angularjs-cart"
+    }
+}
