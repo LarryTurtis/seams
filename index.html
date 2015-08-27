@@ -9,21 +9,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js" type="text/javascript"></script>
 
     <!-- Bootstrap -->
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" type="text/css" />
-    <!--<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript" ></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/seams.css">
 
     <script src="app/app.js" type="text/javascript"></script>
     <script src="bower_components/angularjs-cart/angularjs-cart.js" type="text/javascript"></script>
 </head>
 
 <body ng-controller="seamsCtrl">
-
-    <!-- 
-        bootstrap fluid layout
-        (12 columns: span 10, offset 1 centers the content and adds a margin on each side)
-    -->
-    <shopping-cart ng-if="products" product-data="products"></div>
-
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <shopping-cart product-data="products"></shopping-cart>
+        </div>
+        <div class="row-fluid text-right">
+            <add-product></add-product>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Place sticky footer content here.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

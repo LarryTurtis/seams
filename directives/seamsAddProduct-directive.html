@@ -1,0 +1,29 @@
+<div class="row-fluid">
+
+    <p>
+        <button ng-click="showPanel = true" type="button" class="btn btn-default btn-med">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Product
+        </button>
+    </p>
+    <table class="table table-bordered" ng-show="showPanel">
+        <tr class="well">
+            <td colspan="{{fields.length}}"></td>
+        </tr>
+        <tr>
+            <td ng-repeat="field in fields">
+                <div class="form-inline">
+                    <div class="form-group" ng-switch="field.type">
+                        <label for="{{field.name}}">{{field.name}}</label>
+                        <input ng-switch-when="file" type="file" class="form-control" id="{{field.name}}" placeholder="{{field.name}}" ng-model="newItem[field.name]">
+                        <input ng-switch-default type="text" class="form-control" id="{{field.name}}" placeholder="{{field.name}}" ng-model="newItem[field.name]">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="{{fields.length}}">
+                <button type="submit" class="btn btn-primary" ng-click="addItem()">Submit</button>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -10,6 +10,26 @@
             $scope.products = result.data;
         });
 
-    });
+    })
+
+    .directive("addProduct", function($http) {
+        return {
+            restrict: "E",
+            templateUrl: "/directives/seamsAddProduct-directive.html",
+            link: function($scope) {
+                $scope.fields = [{"name": "Image", "type": "file"},
+                                {"name": "Name", "type": "text"},
+                                {"name": "Description", "type": "text"},
+                                {"name": "Price", "type": "number"},
+                                {"name": "Size", "type": "text"},
+                                ];
+                $scope.newItem = {};
+
+                $scope.addItem = function() {
+                    $http.post("/api/dbCreate", $scope.newItem);
+                };
+            }
+        }
+    })
 
 })(angular);
