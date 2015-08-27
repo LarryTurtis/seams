@@ -1,4 +1,4 @@
-[{
+{
     "id": "APL",
     "name": "Apple",
     "description": "Eat one every day to keep the doctor away!",
@@ -9,7 +9,8 @@
     "folate": 0,
     "potassium": 1,
     "fibe": 2
-}, {
+}
+{
     "id": "BAN",
     "name": "Banana",
     "description": "These are rich in Potassium and easy to peel.",
@@ -20,7 +21,8 @@
     "folate": 2,
     "potassium": 2,
     "fibe": 2
-}, {
+}
+{
     "id": "CTP",
     "name": "Cantaloupe",
     "description": "Delicious and refreshing.",
@@ -31,7 +33,8 @@
     "folate": 1,
     "potassium": 2,
     "fibe": 0
-}, {
+}
+{
     "id": "CTP",
     "name": "Cantaloupe",
     "description": "Delicious and refreshing.",
@@ -42,7 +45,8 @@
     "folate": 1,
     "potassium": 2,
     "fibe": 0
-}, {
+}
+{
     "id": "FIG",
     "name": "Fig",
     "description": "OK, not that nutritious, but sooo good!",
@@ -53,7 +57,8 @@
     "folate": 0,
     "potassium": 1,
     "fibe": 2
-}, {
+}
+{
     "id": "GRF",
     "name": "Grapefruit",
     "description": "Pink or red, always healthy and delicious.",
@@ -64,7 +69,8 @@
     "folate": 1,
     "potassium": 1,
     "fibe": 1
-}, {
+}
+{
     "id": "GRP",
     "name": "Grape",
     "description": "Wine is great, but grapes are even better.",
@@ -75,7 +81,8 @@
     "folate": 0,
     "potassium": 1,
     "fibe": 1
-}, {
+}
+{
     "id": "GUA",
     "name": "Guava",
     "description": "Exotic, fragrant, tasty!",
@@ -86,7 +93,8 @@
     "folate": 0,
     "potassium": 1,
     "fibe": 2
-}, {
+}
+{
     "id": "KIW",
     "name": "Kiwi",
     "description": "These come from New Zealand.",
@@ -97,7 +105,8 @@
     "folate": 0,
     "potassium": 2,
     "fibe": 2
-}, {
+}
+{
     "id": "LYC",
     "name": "Lychee",
     "description": "Unusual and highly addictive!",
@@ -108,4 +117,4 @@
     "folate": 0,
     "potassium": 2,
     "fibe": 2
-}]
+}

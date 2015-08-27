@@ -6,7 +6,7 @@
 
     .controller("seamsCtrl", function($scope, $http) {
         
-        $http.get("sampleData.json").then(function(result){
+        $http.post("/api/db").then(function(result){
             $scope.products = result.data;
         });
 

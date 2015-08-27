@@ -9,16 +9,16 @@ var ObjectId = require("mongodb").ObjectID;
 var url = "mongodb://localhost:27017/test";
 
 var insertDocument = function(db, callback, data) {
-    db.collection('restaurants').insertOne(data, function(err, result) {
+    db.collection('fruits').insertOne(data, function(err, result) {
         assert.equal(err, null);
-        console.log("Inserted a document into the restaurants collection.");
+        console.log("Inserted a document into the fruits collection.");
         callback(result);
     });
 };
 
 var findDocument = function(db, callback, filter) {
     var result = [];
-   var cursor =db.collection('restaurants').find(filter);
+   var cursor =db.collection('fruits').find(filter);
    cursor.each(function(err, doc) {
       assert.equal(err, null);
       if (doc != null) {
@@ -56,9 +56,10 @@ var getRecord = function(req, res) {
 
 app.post("/api/dbCreate", createRecord);
 app.post("/api/db", getRecord);
+app.use(express.static(__dirname));
 
 
-var server = app.listen(2323, function() {
+var server = http.createServer(app).listen(2323, function() {
     var host = server.address().address;
     var port = server.address().port;
     console.log("Node.js Listening on port: %s:%s", host, port);
