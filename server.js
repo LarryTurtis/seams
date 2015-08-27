@@ -8,37 +8,17 @@ var assert = require("assert");
 var ObjectId = require("mongodb").ObjectID;
 var url = "mongodb://localhost:27017/test";
 
-var insertDocument = function(db, callback) {
-    db.collection('restaurants').insertOne({
-        "address": {
-            "street": "2 Avenue",
-            "zipcode": "10075",
-            "building": "1480",
-            "coord": [-73.9557413, 40.7720266],
-        },
-        "borough": "Manhattan",
-        "cuisine": "Italian",
-        "grades": [{
-            "date": new Date("2014-10-01T00:00:00Z"),
-            "grade": "A",
-            "score": 11
-        }, {
-            "date": new Date("2014-01-16T00:00:00Z"),
-            "grade": "B",
-            "score": 17
-        }],
-        "name": "Vella",
-        "restaurant_id": "41704620"
-    }, function(err, result) {
+var insertDocument = function(db, callback, data) {
+    db.collection('restaurants').insertOne(data, function(err, result) {
         assert.equal(err, null);
         console.log("Inserted a document into the restaurants collection.");
         callback(result);
     });
 };
 
-var findRestaurants = function(db, callback) {
+var findDocument = function(db, callback, filter) {
     var result = [];
-   var cursor =db.collection('restaurants').find({ "address.zipcode": "10075" });
+   var cursor =db.collection('restaurants').find(filter);
    cursor.each(function(err, doc) {
       assert.equal(err, null);
       if (doc != null) {
@@ -56,7 +36,7 @@ var createRecord = function(req, res) {
         console.log("Connected correctly to server");
         insertDocument(db, function() {
             db.close();
-        });
+        }, req.body);
     });
     res.send('Completed');
 };
@@ -66,16 +46,16 @@ var getRecord = function(req, res) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
         console.log("Connected correctly to server");
-        findRestaurants(db, function(result) {
+        findDocument(db, function(result) {
             db.close();
             console.log("done", result);
             res.send(result);
-        });
+        }, req.body);
     });
 };
 
 app.post("/api/dbCreate", createRecord);
-app.get("/api/db", getRecord);
+app.post("/api/db", getRecord);
 
 
 var server = app.listen(2323, function() {
