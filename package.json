@@ -7,6 +7,7 @@
     "url": "https://github.com/GaryKertis/seams.git"
   },
   "dependencies": {
-    "mongodb": "2.0.42"
+    "mongodb": "2.0.42",
+    "express": "3.4.3"
   }
 }
