@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "mongodb": "2.0.42",
-    "express": "3.4.3"
+    "express": "3.4.3",
+    "multer": "1.0.3",
+    "body-parser": "1.13.3"
   }
 }
