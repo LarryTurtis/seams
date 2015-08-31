@@ -13,9 +13,9 @@
             <td ng-repeat="field in fields">
                 <div class="form-inline">
                     <div class="form-group" ng-switch="field.type">
-                        <label for="{{field.name}}">{{field.name}}</label>
-                        <input ng-switch-when="file" type="file" class="form-control" id="{{field.name}}" placeholder="{{field.name}}" ng-model="newItem[field.name]">
-                        <input ng-switch-default type="text" class="form-control" id="{{field.name}}" placeholder="{{field.name}}" ng-model="newItem[field.name]">
+                        <label for="{{field.name}}">{{field.name | capitalize}}</label>
+                        <seams-file-upload ng-switch-when="file" file="newItem.image"></seams-file-upload>
+                        <input ng-switch-default type="text" class="form-control" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]">
                     </div>
                 </div>
             </td>
