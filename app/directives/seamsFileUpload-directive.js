@@ -1,4 +1,4 @@
-"use strict";
+(function(angular){"use strict";
 angular.module("seams")
     .directive("seamsFileUpload", function() {
         return {
@@ -6,11 +6,12 @@ angular.module("seams")
                 file: "="
             },
             restrict: "E",
-            link: function($scope, $element) {
+            link: function($scope, $element, $attrs, $http) {
 
                 $element.on("change", function(_event) {
 
-                    $scope.file = _event.target.files[0]
+                    var file = _event.target.files[0];
+                    $scope.file = file;
 
                 });
 
@@ -18,3 +19,4 @@ angular.module("seams")
             template: "<input type='file'/>"
         };
     });
+}(angular))

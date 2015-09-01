@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="css/seams.css">
 
     <script src="app/app.js" type="text/javascript"></script>
-    <script src="app/fileUpload-directive.js" type="text/javascript"></script>
+    <script src="app/services/seamsFileUpload-service.js" type="text/javascript"></script>
+    <script src="app/directives/seamsFileUpload-directive.js" type="text/javascript"></script>
+    <script src="app/directives/seamsAddProduct-directive.js" type="text/javascript"></script>
     <script src="bower_components/angularjs-cart/angularjs-cart.js" type="text/javascript"></script>
 </head>
 
@@ -23,7 +25,7 @@
             <shopping-cart product-data="products"></shopping-cart>
         </div>
         <div class="row-fluid text-right">
-            <add-product></add-product>
+            <seams-add-product></seams-add-product>
         </div>
     </div>
     <footer class="footer">
