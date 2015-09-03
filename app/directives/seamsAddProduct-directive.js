@@ -27,7 +27,7 @@
                     $scope.addItem = function() {
                         if ($scope.newItem.image) {
                             seamsFileUploadService.upload($scope.newItem.image).then(function() {
-                                $scope.newItem.image = $scope.newItem.image.name;
+                                $scope.newItem.image = "/uploads/" + $scope.newItem.image.name;
                                 $http.post("/api/dbCreate", $scope.newItem);
                                 $scope.showPanel = false;
                             });
