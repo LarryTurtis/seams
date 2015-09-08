@@ -28,7 +28,9 @@
                     $scope.newItem = {};
 
                     $scope.addItem = function() {
-                        if ($scope.newItem.image) {
+                        if ($scope.newItem.image && $scope.newItem.name) {
+
+                            $scope.newItem.id = $scope.newItem.name.replace(/[^\w\s]/gi, '');
 
                             var destination = './img/products/';
 
