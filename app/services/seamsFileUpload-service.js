@@ -15,14 +15,16 @@
             }
         };
 
-        var upload = function(file) {
+        var upload = function(file, destination) {
             if (verifyImage(file.type)) {
                 var fd = new FormData();
+                fd.destination = "./img/products/";
                 fd.append('avatar', file);
                 return $http.post('/api/upload', fd, {
                     transformRequest: angular.identity,
                     headers: {
-                        'Content-Type': undefined
+                        'Content-Type': undefined,
+                        'destination': destination
                     }
                 });
             }

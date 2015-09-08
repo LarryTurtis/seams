@@ -5,6 +5,9 @@
             return {
                 restrict: "E",
                 templateUrl: "app/directives/seamsAddProduct-directive.html",
+                scope: {
+                    "products": "="
+                },
                 link: function($scope) {
                     $scope.fields = [{
                         "name": "image",
@@ -26,9 +29,14 @@
 
                     $scope.addItem = function() {
                         if ($scope.newItem.image) {
-                            seamsFileUploadService.upload($scope.newItem.image).then(function() {
-                                $scope.newItem.image = "/uploads/" + $scope.newItem.image.name;
-                                $http.post("/api/dbCreate", $scope.newItem);
+
+                            var destination = './img/products/';
+
+                            seamsFileUploadService.upload($scope.newItem.image, destination).then(function() {
+                                $scope.newItem.image = destination + $scope.newItem.image.name;
+                                $http.post("/api/dbCreate", $scope.newItem).then(function(result){
+                                    $scope.products.push(result.data);
+                                });
                                 $scope.showPanel = false;
                             });
                         }

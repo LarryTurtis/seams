@@ -8,7 +8,8 @@
     "vitc": 2,
     "folate": 0,
     "potassium": 1,
-    "fibe": 2
+    "fibe": 2,
+    "image": "./img/products/APL.jpg"
 }
 {
     "id": "BAN",
@@ -20,7 +21,8 @@
     "vitc": 1,
     "folate": 2,
     "potassium": 2,
-    "fibe": 2
+    "fibe": 2,
+    "image": "./img/products/BAN.jpg"
 }
 {
     "id": "CTP",
@@ -32,19 +34,8 @@
     "vitc": 4,
     "folate": 1,
     "potassium": 2,
-    "fibe": 0
-}
-{
-    "id": "CTP",
-    "name": "Cantaloupe",
-    "description": "Delicious and refreshing.",
-    "price": 3,
-    "cal": 50,
-    "carot": 4,
-    "vitc": 4,
-    "folate": 1,
-    "potassium": 2,
-    "fibe": 0
+    "fibe": 0,
+    "image": "./img/products/CTP.jpg"
 }
 {
     "id": "FIG",
@@ -56,7 +47,8 @@
     "vitc": 0,
     "folate": 0,
     "potassium": 1,
-    "fibe": 2
+    "fibe": 2,
+    "image": "./img/products/FIG.jpg"
 }
 {
     "id": "GRF",
@@ -68,7 +60,8 @@
     "vitc": 4,
     "folate": 1,
     "potassium": 1,
-    "fibe": 1
+    "fibe": 1,
+    "image": "./img/products/GRF.jpg"
 }
 {
     "id": "GRP",
@@ -80,7 +73,8 @@
     "vitc": 3,
     "folate": 0,
     "potassium": 1,
-    "fibe": 1
+    "fibe": 1,
+    "image": "./img/products/GRP.jpg"
 }
 {
     "id": "GUA",
@@ -92,7 +86,8 @@
     "vitc": 4,
     "folate": 0,
     "potassium": 1,
-    "fibe": 2
+    "fibe": 2,
+    "image": "./img/products/GUA.jpg"
 }
 {
     "id": "KIW",
@@ -104,7 +99,8 @@
     "vitc": 4,
     "folate": 0,
     "potassium": 2,
-    "fibe": 2
+    "fibe": 2,
+    "image": "./img/products/KIW.jpg"
 }
 {
     "id": "LYC",
@@ -116,5 +112,6 @@
     "vitc": 4,
     "folate": 0,
     "potassium": 2,
-    "fibe": 2
+    "fibe": 2,
+    "image": "./img/products/LYC.jpg"
 }

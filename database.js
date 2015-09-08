@@ -1,7 +1,7 @@
 var MongoClient = require("mongodb").MongoClient,
-  assert = require("assert"),
-  ObjectId = require("mongodb").ObjectID,
-  url = "mongodb://localhost:27017/test";
+    assert = require("assert"),
+    ObjectId = require("mongodb").ObjectID,
+    url = "mongodb://localhost:27017/test";
 
 var insertDocument = function(db, callback, data) {
     db.collection('fruits').insertOne(data, function(err, result) {
@@ -26,11 +26,11 @@ var findDocument = function(db, callback, filter) {
 exports.createRecord = function(req, res) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        insertDocument(db, function() {
+        insertDocument(db, function(result) {
             db.close();
+            res.send(req.body);
         }, req.body);
     });
-    res.send('Completed');
 };
 
 exports.getRecord = function(req, res) {

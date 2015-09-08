@@ -4,11 +4,9 @@
 
     angular.module('seams', ['AngularStore'])
 
-    .controller("seamsCtrl", function($scope, $http) {
+    .controller("seamsCtrl", function($scope, seamsGetProducts) {
 
-        $http.post("/api/db").then(function(result) {
-            $scope.products = result.data;
-        });
+        $scope.products = seamsGetProducts.getProducts();
 
     })
 
