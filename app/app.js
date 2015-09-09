@@ -3,10 +3,20 @@
 (function(angular) {
 
     angular.module('seams', ['AngularStore'])
+    .config(['$routeProvider', function($routeProvider) {
+        $routeProvider.
+        when('/error', {
+            templateUrl: 'partials/error.html'
+        })
+    }])
 
-    .controller("seamsCtrl", function($scope, seamsGetProducts) {
+    .controller("seamsCtrl", function($scope, $location, seamsGetProducts) {
 
         $scope.products = seamsGetProducts.getProducts();
+
+        $scope.$on("notAuthorized", function() {
+            $location.path("/error");
+        });
 
     })
 

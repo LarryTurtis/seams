@@ -1,10 +1,10 @@
 (function(angular) {
     "use strict";
     angular.module("seams")
-        .directive("seamsAddProduct", function($http, seamsFileUploadService) {
+        .directive("seamsAddProduct", function($http, $location, seamsFileUploadService) {
             return {
                 restrict: "E",
-                templateUrl: "app/directives/seamsAddProduct-directive.html",
+                templateUrl: "directives/seamsAddProduct-directive.html",
                 scope: {
                     "products": "="
                 },
@@ -32,15 +32,23 @@
 
                             $scope.newItem.id = $scope.newItem.name.replace(/[^\w\s]/gi, '');
 
-                            var destination = './img/products/';
+                            var destination = '/img/products/';
 
-                            seamsFileUploadService.upload($scope.newItem.image, destination).then(function() {
-                                $scope.newItem.image = destination + $scope.newItem.image.name;
-                                $http.post("/api/dbCreate", $scope.newItem).then(function(result){
-                                    $scope.products.push(result.data);
+                            seamsFileUploadService.upload($scope.newItem.image, destination).then(
+                                function() {
+                                    $scope.newItem.image = destination + $scope.newItem.image.name;
+                                    $http.post("/api/dbCreate", $scope.newItem).then(
+                                        function(result) {
+                                            $scope.products.push(result.data);
+                                        },
+                                        function(error) {
+                                            console.log("Error!")
+                                        });
+                                    $scope.showPanel = false;
+                                },
+                                function() {
+                                    $scope.$emit("notAuthorized");
                                 });
-                                $scope.showPanel = false;
-                            });
                         }
                     };
                 }
