@@ -1,29 +1,39 @@
 <div class="row-fluid">
-
     <p>
         <button ng-click="showPanel = true" type="button" class="btn btn-default btn-med">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Product
         </button>
     </p>
-    <table class="table table-bordered" ng-show="showPanel">
-        <tr class="well">
-            <td colspan="{{fields.length}}"></td>
-        </tr>
-        <tr>
-            <td ng-repeat="field in fields">
-                <div class="form-inline">
-                    <div class="form-group" ng-switch="field.type">
-                        <label for="{{field.name}}">{{field.name | capitalize}}</label>
-                        <seams-file-upload ng-switch-when="file" file="newItem.image"></seams-file-upload>
-                        <input ng-switch-default type="text" class="form-control" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]">
+    <div ng-show="error" class="alert alert-danger text-center">
+        {{error}}
+    </div>
+
+
+    <form name="addProduct">
+        <table class="table table-bordered" ng-show="showPanel">
+            <tr class="well">
+                <td colspan="{{fields.length}}"></td>
+            </tr>
+            <tr>
+                <td ng-repeat="field in fields">
+                    <div class="form-inline">
+                        <div class="form-group" ng-switch="field.type">
+                            <label for="{{field.name}}">{{field.name | capitalize}}
+                                <span class="text-danger glyphicon glyphicon-asterisk" aria-hidden="true">
+                                </span>
+                            </label>
+                            <seams-file-upload ng-switch-when="file" file="newItem.image"></seams-file-upload>
+                            <input ng-switch-when="number" type="number" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
+                            <input ng-switch-default type="text" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="{{fields.length}}">
-                <button type="submit" class="btn btn-primary" ng-click="addItem()">Submit</button>
-            </td>
-        </tr>
-    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="{{fields.length}}">
+                    <button type="submit" class="btn btn-primary" ng-click="addItem()">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>

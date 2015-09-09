@@ -25,7 +25,9 @@ app
         extended: true
     }))
     .use(expressSession({
-        secret: 'mySecretKey'
+        secret: 'mySecretKey',
+        resave: true,
+        saveUninitialized: true
     }))
     .use(passport.initialize())
     .use(passport.session())

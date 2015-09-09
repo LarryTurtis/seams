@@ -2,7 +2,7 @@
 
 (function(angular) {
 
-    angular.module('seams', ['AngularStore'])
+    angular.module('seams', ['ngRoute', 'AngularStore'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.
         when('/error', {

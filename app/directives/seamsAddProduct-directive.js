@@ -23,7 +23,7 @@
                         "type": "number"
                     }, {
                         "name": "size",
-                        "type": "text"
+                        "type": "number"
                     }, ];
                     $scope.newItem = {};
 
@@ -40,11 +40,11 @@
                                     $http.post("/api/dbCreate", $scope.newItem).then(
                                         function(result) {
                                             $scope.products.push(result.data);
+                                            $scope.showPanel = false;
                                         },
                                         function(error) {
-                                            console.log("Error!")
+                                            $scope.error = error.data;
                                         });
-                                    $scope.showPanel = false;
                                 },
                                 function() {
                                     $scope.$emit("notAuthorized");
