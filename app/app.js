@@ -12,11 +12,22 @@
 
     .controller("seamsCtrl", function($scope, $location, seamsGetProducts) {
 
-        $scope.products = seamsGetProducts.getProducts();
+        $scope.isAdmin = false;
+
+        seamsGetProducts.getProducts().then(function(result){
+            $scope.products = result.data;
+            if (result.headers("Authorization")) {
+                $scope.isAdmin = true;
+            }
+        });
 
         $scope.$on("notAuthorized", function() {
             $location.path("/error");
         });
+
+        $scope.checkLocation = function() {
+            return $location.path() === "/store";
+        };
 
     })
 

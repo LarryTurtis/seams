@@ -3,5 +3,8 @@
     "version": "0.0.0",
     "dependencies": {
         "angularjs-cart": "git://github.com/GaryKertis/angularjs-cart"
+    },
+    "devDependencies": {
+    	"bootstrap": "3.3.5"
     }
 }

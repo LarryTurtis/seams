@@ -1,5 +1,6 @@
 var http = require("http"),
     express = require("express"),
+    favicon = require('serve-favicon'),
     path = require('path'),
     upload = require("./lib/fileUpload.js"),
     database = require("./lib/database.js"),
@@ -10,6 +11,8 @@ var http = require("http"),
     mongoose = require('mongoose'),
     flash = require('connect-flash'),
     app = express();
+
+app.use(favicon(__dirname + '/app/img/favicon.ico'));
 
 mongoose.connect("mongodb://localhost:27017/test");
 

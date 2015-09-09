@@ -2,14 +2,16 @@
 <html ng-app="seams">
 
 <head>
-    <title>Shopping Cart with AngularJS</title>
+    <title>Seams.</title>
 
     <!-- jQuery, Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js" type="text/javascript"></script>
 
-    <!-- Bootstrap -->
+    <!--  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    -->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/seams.css">
 
     <script src="app.js" type="text/javascript"></script>
@@ -21,11 +23,29 @@
 </head>
 
 <body ng-controller="seamsCtrl">
-    <div class="container-fluid">
+    <div class="container">
+        <nav ng-show="isAdmin" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">You are logged in as Admin.</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#/store">Home</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/signout">Sign out.</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <div class="row-fluid">
             <shopping-cart product-data="products"></shopping-cart>
         </div>
-        <div class="row-fluid text-right">
+        <div class="row-fluid text-right" ng-show="isAdmin && checkLocation()">
             <seams-add-product products="products"></seams-add-product>
         </div>
     </div>

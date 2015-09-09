@@ -5,7 +5,7 @@
 
         var getProducts = function() {
             return $http.post("/api/db").then(function(result) {
-                return result.data;
+                return result;
             });
         };
 
