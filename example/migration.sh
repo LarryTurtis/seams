@@ -1,3 +1,3 @@
 #!/bin/bash
-mongoimport --db test --collection fruits --drop --file sampleData.json
+mongoimport --db test --collection products --drop --file sampleData.json
 cp -r img ../app/img
