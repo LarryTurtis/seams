@@ -19,10 +19,10 @@
                         "name": "description",
                         "type": "text"
                     }, {
-                        "name": "price",
-                        "type": "number"
-                    }, {
                         "name": "size",
+                        "type": "string"
+                    }, {
+                        "name": "price",
                         "type": "number"
                     }, ];
                     $scope.newItem = {};

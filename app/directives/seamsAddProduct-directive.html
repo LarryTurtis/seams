@@ -23,7 +23,11 @@
                                 </span>
                             </label>
                             <seams-file-upload ng-switch-when="file" file="newItem.image"></seams-file-upload>
-                            <input ng-switch-when="number" type="number" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
+                            <div class="input-group" ng-switch-when="number">
+                                <span class="input-group-addon">$</span>
+                                <input type="number" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
+                                <span class="input-group-addon">.00</span>
+                            </div>
                             <input ng-switch-default type="text" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
                         </div>
                     </div>
@@ -31,7 +35,7 @@
             </tr>
             <tr>
                 <td colspan="{{fields.length}}">
-                    <button type="submit" class="btn btn-primary" ng-click="addItem()">Submit</button>
+                    <button type="submit" class="btn btn-primary" ng-click="addItem()" ng-disabled="addProduct.$invalid">Submit</button>
                 </td>
             </tr>
         </table>
