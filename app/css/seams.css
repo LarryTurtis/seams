@@ -27,3 +27,7 @@ body {
 shopping-cart .thumbnail {
     max-width: 150px;
 }
+
+.admin {
+    margin-top: 50px;
+}

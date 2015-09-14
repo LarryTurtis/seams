@@ -3,18 +3,29 @@
 (function(angular) {
 
     angular.module('seams', ['ngRoute', 'AngularStore'])
+
     .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.
-        when('/error', {
-            templateUrl: 'partials/error.html'
-        })
+
+        $routeProvider
+            .when('/error', {
+                templateUrl: 'partials/error.html'
+            })
+            .when('/shop', {
+                templateUrl: "partials/shop.html"
+            })
+            .when('/', {
+                templateUrl: "partials/main.html"
+            })
+            .otherwise({
+                redirectTo: "/"
+            })
     }])
 
     .controller("seamsCtrl", function($scope, $location, seamsGetProducts) {
 
         $scope.isAdmin = false;
 
-        seamsGetProducts.getProducts().then(function(result){
+        seamsGetProducts.getProducts().then(function(result) {
             $scope.products = result.data;
             if (result.headers("Authorization")) {
                 $scope.isAdmin = true;
