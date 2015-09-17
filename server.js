@@ -42,6 +42,7 @@ app.use('/', routes);
 app.use("/", express.static("app"));
 
 app.post("/api/dbCreate", auth.shouldDeny, database.createRecord);
+app.post("/api/dbDelete", auth.shouldDeny, database.deleteRecord);
 app.post("/api/db", auth.shouldAllow, database.getRecord);
 
 app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, res) {

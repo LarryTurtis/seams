@@ -9,24 +9,24 @@
     // the storeController contains two objects:
     // - store: contains the product list
     // - cart: the shopping cart object
-    var storeController = function($scope, DataService) {
+    var storeController = function($scope, $http, DataService) {
 
-        $scope.currentView = "partials/store.html";
+        $scope.currentView = "directives/seams-shopping-cart/store.html";
 
         $scope.changeCurrentView = function(view, id) {
 
             switch (view) {
                 case 'cart':
-                    $scope.currentView = "partials/shoppingCart.html";
+                    $scope.currentView = "directives/seams-shopping-cart/shoppingCart.html";
                     break;
                 case 'store':
-                    $scope.currentView = "partials/store.html";
+                    $scope.currentView = "directives/seams-shopping-cart/store.html";
                     break;
                 case 'product':
-                    $scope.currentView = "partials/product.html"
+                    $scope.currentView = "directives/seams-shopping-cart/product.html"
                     break;
                 default:
-                    $scope.currentView = "partials/store.html"
+                    $scope.currentView = "directives/seams-shopping-cart/store.html"
             }
 
             if (id) {
@@ -44,17 +44,34 @@
                 // get store and cart from service
                 $scope.store = DataService.store(productData);
                 $scope.cart = DataService.cart;
-                
+
             }
         }, true);
+
+        $scope.deleteItem = function(id) {
+
+            var toDelete = {
+                id: id
+            };
+
+            $http.post("/api/dbDelete", toDelete).then(
+                function() {
+                    $scope.productData = $.grep($scope.productData, function(e){ return e.id != id; });
+                },
+                function(error) {
+                    $scope.error = error.data;
+                });
+        };
+
     };
 
     storeApp.directive("shoppingCart", function() {
         return {
             restrict: "E",
-            templateUrl: "partials/angularjs-cart.html",
+            templateUrl: "directives/seams-shopping-cart/seams-shopping-cart-directive.html",
             scope: {
-                productData: "="
+                productData: "=",
+                admin: "="
             },
             controller: storeController
         }
@@ -115,8 +132,8 @@
 
     //----------------------------------------------------------------
     // product class
-    var product = function(sku, name, description, price, image) {
-        this.sku = sku; // product code (SKU = stock keeping unit)
+    var product = function(id, name, description, price, image) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
@@ -154,8 +171,8 @@
                 var items = JSON.parse(items);
                 for (var i = 0; i < items.length; i++) {
                     var item = items[i];
-                    if (item.sku != null && item.name != null && item.price != null && item.quantity != null) {
-                        item = new cartItem(item.sku, item.name, item.price, item.quantity);
+                    if (item.id != null && item.name != null && item.price != null && item.quantity != null) {
+                        item = new cartItem(item.id, item.name, item.price, item.quantity);
                         this.items.push(item);
                     }
                 }
@@ -173,7 +190,7 @@
     }
 
     // adds an item to the cart
-    shoppingCart.prototype.addItem = function(sku, name, price, quantity) {
+    shoppingCart.prototype.addItem = function(id, name, price, quantity) {
         quantity = this.toNumber(quantity);
         if (quantity != 0) {
 
@@ -181,7 +198,7 @@
             var found = false;
             for (var i = 0; i < this.items.length && !found; i++) {
                 var item = this.items[i];
-                if (item.sku == sku) {
+                if (item.id == id) {
                     found = true;
                     item.quantity = this.toNumber(item.quantity + quantity);
                     if (item.quantity <= 0) {
@@ -192,7 +209,7 @@
 
             // new item, add now
             if (!found) {
-                var item = new cartItem(sku, name, price, quantity);
+                var item = new cartItem(id, name, price, quantity);
                 this.items.push(item);
             }
 
@@ -202,11 +219,11 @@
     }
 
     // get the total price for all items currently in the cart
-    shoppingCart.prototype.getTotalPrice = function(sku) {
+    shoppingCart.prototype.getTotalPrice = function(id) {
         var total = 0;
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
-            if (sku == null || item.sku == sku) {
+            if (id == null || item.id == id) {
                 total += this.toNumber(item.quantity * item.price);
             }
         }
@@ -214,11 +231,11 @@
     }
 
     // get the total price for all items currently in the cart
-    shoppingCart.prototype.getTotalCount = function(sku) {
+    shoppingCart.prototype.getTotalCount = function(id) {
         var count = 0;
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
-            if (sku == null || item.sku == sku) {
+            if (id == null || item.id == id) {
                 count += this.toNumber(item.quantity);
             }
         }
@@ -298,7 +315,7 @@
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
             var ctr = i + 1;
-            data["item_number_" + ctr] = item.sku;
+            data["item_number_" + ctr] = item.id;
             data["item_name_" + ctr] = item.name;
             data["quantity_" + ctr] = item.quantity;
             data["amount_" + ctr] = item.price.toFixed(2);
@@ -332,7 +349,7 @@
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
             var ctr = i + 1;
-            data["item_name_" + ctr] = item.sku;
+            data["item_name_" + ctr] = item.id;
             data["item_description_" + ctr] = item.name;
             data["item_price_" + ctr] = item.price.toFixed(2);
             data["item_quantity_" + ctr] = item.quantity;
@@ -369,7 +386,7 @@
         for (var i = 0; i < this.items.length; i++) {
             var item = this.items[i];
             var ctr = i + 1;
-            data["item_name_" + ctr] = item.sku;
+            data["item_name_" + ctr] = item.id;
             data["item_description_" + ctr] = item.name;
             data["item_price_" + ctr] = item.price.toFixed(2);
             data["item_quantity_" + ctr] = item.quantity;
@@ -458,8 +475,8 @@
     //----------------------------------------------------------------
     // items in the cart
     //
-    function cartItem(sku, name, price, quantity) {
-        this.sku = sku;
+    function cartItem(id, name, price, quantity) {
+        this.id = id;
         this.name = name;
         this.price = price * 1;
         this.quantity = quantity * 1;
@@ -494,262 +511,12 @@
         }
     }
 
-    store.prototype.getProduct = function(sku) {
+    store.prototype.getProduct = function(id) {
         for (var i = 0; i < this.products.length; i++) {
-            if (this.products[i].sku == sku)
+            if (this.products[i].id == id)
                 return this.products[i];
         }
         return null;
     };
 
 })(angular);
-angular.module('AngularStore').run(['$templateCache', function($templateCache) {
-  'use strict';
-
-  $templateCache.put('partials/angularjs-cart.html',
-    "<style>\n" +
-    ".table td.tdRight {\n" +
-    "    text-align: right;\n" +
-    "}\n" +
-    ".table td.tdCenter {\n" +
-    "    text-align: center;\n" +
-    "}\n" +
-    ".table-nonfluid {\n" +
-    "    width: auto;\n" +
-    "}\n" +
-    "</style>\n" +
-    "\n" +
-    "<div class=\"span10 offset1\">\n" +
-    "    <div ng-include=\"currentView\"></div>\n" +
-    "</div>\n"
-  );
-
-
-  $templateCache.put('partials/product.html',
-    "<p class=\"text-info\">\n" +
-    "    <img ng-src=\"{{product.image}}\" alt=\"{{product.name}}\"/>\n" +
-    "    {{product.name}}: {{product.description}}<br />\n" +
-    "</p>\n" +
-    "\n" +
-    "<div class=\"container-fluid\">\n" +
-    "    <div class=\"row-fluid\">\n" +
-    "        <div class=\"span8\">\n" +
-    "\n" +
-    "            <!-- product info -->\n" +
-    "            <table class=\"table table-bordered\">\n" +
-    "\n" +
-    "                <tr class=\"well\">\n" +
-    "                    <td class=\"tdRight\" colspan=\"3\" >\n" +
-    "                        <a href=\"\" ng-click=\"changeCurrentView('cart')\" title=\"go to shopping cart\" ng-disabled=\"cart.getTotalCount() < 1\">\n" +
-    "                            <i class=\"icon-shopping-cart\" />\n" +
-    "                            <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | currency}}</b>\n" +
-    "                            <span ng-show=\"cart.getTotalCount(product.sku) > 0\"><br />this item is in the cart</span>\n" +
-    "                        </a>\n" +
-    "                    </td>\n" +
-    "                </tr>\n" +
-    "\n" +
-    "            </table>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <!-- buttons -->\n" +
-    "        <div class=\"span4\">\n" +
-    "            <button \n" +
-    "                class=\"btn btn-block btn-success\" \n" +
-    "                ng-click=\"cart.addItem(product.sku, product.name, product.price, 1)\">\n" +
-    "                <i class=\"icon-shopping-cart icon-white\" /> add to cart\n" +
-    "            </button>\n" +
-    "            <button \n" +
-    "                class=\"btn btn-block btn-danger\" \n" +
-    "                ng-click=\"cart.addItem(product.sku, product.name, product.price, -10000)\"\n" +
-    "                ng-disabled=\"cart.getTotalCount(product.sku) < 1\">\n" +
-    "                <i class=\"icon-trash icon-white\" /> remove from cart\n" +
-    "            </button>\n" +
-    "            <button \n" +
-    "                class=\"btn btn-block\" \n" +
-    "                ng-click=\"changeCurrentView('store')\">\n" +
-    "                <i class=\"icon-chevron-left\" /> back to store\n" +
-    "            </button>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "\n"
-  );
-
-
-  $templateCache.put('partials/shoppingCart.html',
-    "<p class=\"text-info\">\n" +
-    "    Thanks for shopping at the Angular Store.<br />\n" +
-    "    This is your shopping cart. Here you can edit the items, \n" +
-    "    go back to the store, clear the cart, or check out.\n" +
-    "</p>\n" +
-    "\n" +
-    "<div class=\"container-fluid\">\n" +
-    "    <div class=\"row-fluid\">\n" +
-    "        <div class=\"span8\">\n" +
-    "\n" +
-    "            <!-- items -->\n" +
-    "            <table class=\"table table-bordered\">\n" +
-    "\n" +
-    "                <!-- header -->\n" +
-    "                <tr class=\"well\">\n" +
-    "                    <td><b>Item</b></td>\n" +
-    "                    <td class=\"tdCenter\"><b>Quantity</b></td>\n" +
-    "                    <td class=\"tdRight\"><b>Price</b></td>\n" +
-    "                    <td />\n" +
-    "                </tr>\n" +
-    "\n" +
-    "                <!-- empty cart message -->\n" +
-    "                <tr ng-hide=\"cart.getTotalCount() > 0\" >\n" +
-    "                    <td class=\"tdCenter\" colspan=\"4\">\n" +
-    "                        Your cart is empty.\n" +
-    "                    </td>\n" +
-    "                </tr>\n" +
-    "\n" +
-    "                <!-- cart items -->\n" +
-    "                <tr ng-repeat=\"item in cart.items | orderBy:'name'\">\n" +
-    "                    <td>{{item.name}}</td>\n" +
-    "                    <td class=\"tdCenter\">\n" +
-    "                      <div class=\"input-append\">\n" +
-    "                        <!-- use type=tel instead of  to prevent spinners -->\n" +
-    "                        <input\n" +
-    "                            class=\"span3 text-center\" type=\"tel\" \n" +
-    "                            ng-model=\"item.quantity\" \n" +
-    "                            ng-change=\"cart.saveItems()\" />\n" +
-    "                        <button \n" +
-    "                            class=\"btn btn-success\" type=\"button\" \n" +
-    "                            ng-disabled=\"item.quantity >= 1000\"\n" +
-    "                            ng-click=\"cart.addItem(item.sku, item.name, item.price, +1)\">+</button>\n" +
-    "                        <button \n" +
-    "                            class=\"btn btn-inverse\" type=\"button\" \n" +
-    "                            ng-disabled=\"item.quantity <= 1\"\n" +
-    "                            ng-click=\"cart.addItem(item.sku, item.name, item.price, -1)\">-</button>\n" +
-    "                      </div>\n" +
-    "                    </td>\n" +
-    "                    <td class=\"tdRight\">{{item.price * item.quantity | currency}}</td>\n" +
-    "                    <td class=\"tdCenter\" title=\"remove from cart\">\n" +
-    "                        <a href=\"\" ng-click=\"cart.addItem(item.sku, item.name, item.price, -10000000)\" >\n" +
-    "                            <i class=\"icon-remove\" />\n" +
-    "                        </a>\n" +
-    "                    </td>\n" +
-    "                </tr>\n" +
-    "\n" +
-    "                <!-- footer -->\n" +
-    "                <tr class=\"well\">\n" +
-    "                    <td><b>Total</b></td>\n" +
-    "                    <td class=\"tdCenter\"><b>{{cart.getTotalCount()}}</b></td>\n" +
-    "                    <td class=\"tdRight\"><b>{{cart.getTotalPrice() | currency}}</b></td>\n" +
-    "                    <td />\n" +
-    "                </tr>\n" +
-    "            </table>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <!-- buttons -->\n" +
-    "        <div class=\"span4\">\n" +
-    "            <p class=\"text-info\">\n" +
-    "                <button \n" +
-    "                    class=\"btn btn-block\" \n" +
-    "                    ng-click=\"changeCurrentView('store')\">\n" +
-    "                    <i class=\"icon-chevron-left\" /> back to store\n" +
-    "                </button>\n" +
-    "                <button \n" +
-    "                    class=\"btn btn-block btn-danger\" \n" +
-    "                    ng-click=\"cart.clearItems()\" \n" +
-    "                    ng-disabled=\"cart.getTotalCount() < 1\" >\n" +
-    "                    <i class=\"icon-trash icon-white\" /> clear cart\n" +
-    "                </button>\n" +
-    "            </p>\n" +
-    "\n" +
-    "            <br /><br />\n" +
-    "\n" +
-    "            <p class=\"text-info\">\n" +
-    "                <button\n" +
-    "                    class=\"btn btn-block btn-primary\"\n" +
-    "                    ng-click=\"cart.checkout('PayPal')\"\n" +
-    "                    ng-disabled=\"cart.getTotalCount() < 1\">\n" +
-    "                    <i class=\"icon-ok icon-white\" /> check out using PayPal\n" +
-    "                </button>\n" +
-    "                <button \n" +
-    "                    class=\"btn btn-block btn-primary\" \n" +
-    "                    ng-click=\"cart.checkout('Google')\" \n" +
-    "                    ng-disabled=\"cart.getTotalCount() < 1\">\n" +
-    "                    <i class=\"icon-ok icon-white\" /> check out using Google\n" +
-    "                </button>\n" +
-    "                <button \n" +
-    "                    class=\"btn btn-block btn-primary\" \n" +
-    "                    ng-click=\"cart.checkout('Stripe')\" \n" +
-    "                    ng-disabled=\"cart.getTotalCount() < 1\">\n" +
-    "                    <i class=\"icon-ok icon-white\" /> check out using Stripe\n" +
-    "                </button>\n" +
-    "            </p>\n" +
-    "                <!-- Stripe needs a form to post to -->\n" +
-    "                <form class=\"form-stripe\"></form>\n" +
-    "\n" +
-    "            <br /><br />\n" +
-    "\n" +
-    "            <p class=\"text-info\">\n" +
-    "                <button \n" +
-    "                    class=\"btn btn-block btn-link\"\n" +
-    "                    ng-click=\"cart.checkout('PayPal')\"\n" +
-    "                    ng-disabled=\"cart.getTotalCount() < 1\" >\n" +
-    "                    <img src=\"https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif\" alt=\"checkout PayPal\"/>\n" +
-    "                </button>    \n" +
-    "                <button \n" +
-    "                    class=\"btn btn-block btn-link\" \n" +
-    "                    ng-click=\"cart.checkout('Google')\" \n" +
-    "                    ng-disabled=\"cart.getTotalCount() < 1\" >\n" +
-    "                    <img src=\"https://checkout.google.com/buttons/checkout.gif?w=168&h=44&style=white&variant=text\" alt=\"checkoutGoogle\"/>\n" +
-    "                </button>    \n" +
-    "            </p>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n"
-  );
-
-
-  $templateCache.put('partials/store.html',
-    "<p class=\"text-info\">\n" +
-    "    Welcome to the Angular Store.<br />\n" +
-    "    Please select the products you want and add them to your shopping cart.<br />\n" +
-    "    When you are done, click the shopping cart icon to review your order and check out.\n" +
-    "</p>\n" +
-    "\n" +
-    "<p>\n" +
-    "    Search: <input ng-model=\"search\">\n" +
-    "</p>\n" +
-    "\n" +
-    "<table class=\"table table-bordered\">\n" +
-    "    <tr class=\"well\">\n" +
-    "        <td class=\"tdRight\" colspan=\"4\" >\n" +
-    "            <a href=\"\" ng-click=\"changeCurrentView('cart')\" title=\"go to shopping cart\" ng-disabled=\"cart.getTotalCount() < 1\">\n" +
-    "                <i class=\"icon-shopping-cart\" />\n" +
-    "                <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | currency}}</b>\n" +
-    "            </a>\n" +
-    "        </td>\n" +
-    "    </tr>\n" +
-    "    <tr ng-repeat=\"product in store.products | orderBy:'name' | filter:search\" >\n" +
-    "        <td class=\"tdCenter\"><img class=\"thumbnail\" ng-src=\"{{product.image}}\" alt=\"{{product.name}}\" /></td>\n" +
-    "        <td>\n" +
-    "            <a href=\"\" ng-click=\"changeCurrentView('product', product.sku)\"><b>{{product.name}}</b></a><br />\n" +
-    "            {{product.description}}\n" +
-    "        </td>\n" +
-    "        <td class=\"tdRight\">\n" +
-    "            {{product.price | currency}}\n" +
-    "        </td>\n" +
-    "        <td class=\"tdCenter\">\n" +
-    "            <a href=\"\" ng-click=\"cart.addItem(product.sku, product.name, product.price, 1)\">\n" +
-    "                add to cart\n" +
-    "            </a>\n" +
-    "        </td>\n" +
-    "    </tr>\n" +
-    "    <tr class=\"well\">\n" +
-    "        <td class=\"tdRight\" colspan=\"4\">\n" +
-    "            <a href=\"\" ng-click=\"changeCurrentView('cart')\" title=\"go to shopping cart\" ng-disabled=\"cart.getTotalCount() < 1\">\n" +
-    "                <i class=\"icon-shopping-cart\" />\n" +
-    "                <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | currency}}</b>\n" +
-    "            </a>\n" +
-    "        </td>\n" +
-    "    </tr>\n" +
-    "</table>\n"
-  );
-
-}]);

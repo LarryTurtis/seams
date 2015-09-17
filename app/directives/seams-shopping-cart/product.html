@@ -15,7 +15,7 @@
                         <a href="" ng-click="changeCurrentView('cart')" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
                             <i class="icon-shopping-cart" />
                             <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | currency}}</b>
-                            <span ng-show="cart.getTotalCount(product.sku) > 0"><br />this item is in the cart</span>
+                            <span ng-show="cart.getTotalCount(product.id) > 0"><br />this item is in the cart</span>
                         </a>
                     </td>
                 </tr>
@@ -27,13 +27,13 @@
         <div class="span4">
             <button 
                 class="btn btn-block btn-success" 
-                ng-click="cart.addItem(product.sku, product.name, product.price, 1)">
+                ng-click="cart.addItem(product.id, product.name, product.price, 1)">
                 <i class="icon-shopping-cart icon-white" /> add to cart
             </button>
             <button 
                 class="btn btn-block btn-danger" 
-                ng-click="cart.addItem(product.sku, product.name, product.price, -10000)"
-                ng-disabled="cart.getTotalCount(product.sku) < 1">
+                ng-click="cart.addItem(product.id, product.name, product.price, -10000)"
+                ng-disabled="cart.getTotalCount(product.id) < 1">
                 <i class="icon-trash icon-white" /> remove from cart
             </button>
             <button 

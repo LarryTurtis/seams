@@ -31,3 +31,7 @@ shopping-cart .thumbnail {
 .admin {
     margin-top: 50px;
 }
+
+.table tbody>tr>td.vert-align{
+    vertical-align: middle;
+}
