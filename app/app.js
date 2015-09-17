@@ -36,8 +36,8 @@
             $location.path("/error");
         });
 
-        $scope.checkLocation = function() {
-            return $location.path() === "/store";
+        $scope.checkLocation = function(name) {
+            return $location.path() === name;
         };
 
     })
