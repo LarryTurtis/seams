@@ -4,6 +4,7 @@ var http = require("http"),
     path = require('path'),
     upload = require("./lib/fileUpload.js"),
     database = require("./lib/database.js"),
+    finDb = require("./lib/finDb.js"),
     auth = require("./lib/authMethods.js"),
     bodyParser = require("body-parser"),
     passport = require('passport'),
@@ -41,13 +42,25 @@ var routes = require('./lib/routes/index')(passport);
 app.use('/', routes);
 app.use("/", express.static("app"));
 
+/**
+ * Product methods.
+ */
 app.post("/api/dbCreate", auth.shouldDeny, database.createRecord);
 app.post("/api/dbDelete", auth.shouldDeny, database.deleteRecord);
 app.post("/api/db", auth.shouldAllow, database.getRecord);
-
 app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, res) {
     res.send(req.file);
 });
+
+/**
+ * Finance methods
+ */
+app.post("/api/addAdvertiser", auth.shouldDeny, finDb.addAdvertiser);
+app.get("/api/getAllAdvertisers", auth.shouldDeny, finDb.getAllAdvertisers);
+app.get("/api/getTransactions", auth.shouldDeny, finDb.getTransactions);
+app.post("/api/editAdvertiser", auth.shouldDeny, finDb.editAdvertiser);
+app.post("/api/addCategory", auth.shouldDeny, finDb.addCategory);
+
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

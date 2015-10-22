@@ -1,0 +1,35 @@
+<div class="row-fluid">
+    Finance
+</div>
+
+    <form name="addProduct">
+        <table class="table table-bordered" ng-show="showPanel">
+            <tr class="well">
+                <td colspan="{{fields.length}}"></td>
+            </tr>
+            <tr>
+                <td ng-repeat="field in fields">
+                    <div class="form-inline">
+                        <div class="form-group" ng-switch="field.type">
+                            <label for="{{field.name}}">{{field.name | capitalize}}
+                                <span class="text-danger glyphicon glyphicon-asterisk" aria-hidden="true">
+                                </span>
+                            </label>
+                            <seams-file-upload ng-switch-when="file" file="newItem.image"></seams-file-upload>
+                            <div class="input-group" ng-switch-when="number">
+                                <span class="input-group-addon">$</span>
+                                <input type="number" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
+                                <span class="input-group-addon">.00</span>
+                            </div>
+                            <input ng-switch-default type="text" class="form-control" name="{{field.name}}" id="{{field.name}}" placeholder="{{field.name | capitalize}}" ng-model="newItem[field.name]" required>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="{{fields.length}}">
+                    <button type="submit" class="btn btn-primary" ng-click="addItem()" ng-disabled="addProduct.$invalid">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>

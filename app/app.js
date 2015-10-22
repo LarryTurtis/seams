@@ -16,6 +16,10 @@
             .when('/', {
                 templateUrl: "partials/main.html"
             })
+            .when('/budget', {
+                templateUrl: "budget/budget.html",
+                controller: "budget/budget-controller.js"
+            })
             .otherwise({
                 redirectTo: "/"
             })
