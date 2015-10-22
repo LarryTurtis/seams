@@ -6,50 +6,65 @@
     .controller("budgetCtrl", function($scope, $http) {
 
         $scope.isAdmin = false;
-        $scope.categories = {};
+        $scope.categories = [];
         $scope.addCategory = addCategory;
         $scope.addAdvertiserToCategory = addAdvertiserToCategory;
         $scope.totalAmount = 0;
+        $scope.update = update;
 
-        $http.get('/api/getTransactions').then(function(result) {
-            $scope.transactions = result.data;
-            if (result.headers("Authorization")) {
-                $scope.isAdmin = true;
-            }
+        update();
 
-            _.remove($scope.transactions, function(n) {
-                return n.amount > 0;
-            });
+        function update() {
+            $scope.transactions = [];
+            $scope.categories = [];
+            $scope.totalAmount = 0;
 
-            $http.get('/api/getAllAdvertisers').then(function(result) {
-                $scope.advertisers = result.data;
+            $http.get('/api/getTransactions?startDate=' + $scope.startDate + '&endDate=' + $scope.endDate).then(function(result) {
+                $scope.transactions = result.data;
+                if (result.headers("Authorization")) {
+                    $scope.isAdmin = true;
+                }
 
-                $scope.transactions.forEach(function(transaction) {
-                    $scope.advertisers.forEach(function(advertiser) {
-                        if (transaction.description === advertiser.name) {
-                            transaction.category = advertiser.category;
+                _.remove($scope.transactions, function(n) {
+                    return n.amount > 0;
+                });
 
-                            if (!$scope.categories[advertiser.category]) {
-                                $scope.categories[advertiser.category] = {
-                                    name: advertiser.category,
-                                    amount: transaction.amount
+                $http.get('/api/getAllAdvertisers').then(function(result) {
+                    $scope.advertisers = result.data;
+
+                    $scope.transactions.forEach(function(transaction) {
+                        $scope.advertisers.forEach(function(advertiser) {
+                            if (transaction.description === advertiser.name) {
+                                transaction.category = advertiser.category;
+
+                                var cat = _.find($scope.categories, function(category) {
+                                    return category.name === transaction.category;
+                                });
+
+                                if (cat) {
+                                    cat.amount += transaction.amount;
+                                } else {
+                                    if (transaction.category !== 'Transfer') {
+                                        $scope.categories.push({
+                                            name: transaction.category,
+                                            amount: transaction.amount
+                                        });
+                                    }
                                 }
-                            } else {
-                                $scope.categories[advertiser.category].amount += transaction.amount;
                             }
-                        }
 
+                        });
+                        if (transaction.category && transaction.category !== 'Transfer') $scope.totalAmount += transaction.amount;
                     });
-                     if (transaction.category && transaction.category !== 'Transfer') $scope.totalAmount += transaction.amount;
-                });
 
-                $scope.uncategorized = _.filter($scope.transactions, function(n) {
-                    return !n.category;
+                    $scope.uncategorized = _.filter($scope.transactions, function(n) {
+                        return !n.category;
+                    });
+
                 });
 
             });
-
-        });
+        }
 
         function addCategory() {
             $http.post('/api/addCategory', $scope.category);
