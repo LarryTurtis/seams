@@ -2,7 +2,7 @@
 
 (function(angular) {
 
-    angular.module('seams', ['ngRoute', 'AngularStore'])
+    angular.module('seams', ['ngRoute', 'AngularStore', 'angular.filter'])
 
     .config(['$routeProvider', function($routeProvider) {
 

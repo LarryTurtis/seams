@@ -1,24 +1,48 @@
+
+
 <div class="row-fluid">
     Finance
 </div>
 
+<label for="category">Add New Category</label>
+<input name="category" ng-model="category.name" />
+<button class="btn btn-primary" ng-click="addCategory()">Submit</button>
+
 <table class="table table-bordered">
     <tr class="well">
-        <td class="tdRight" colspan="{{4 + (admin ? 1 : 0)}}">
+        <td class="tdRight" colspan="5">
         </td>
     </tr>
-    <tr ng-repeat="transaction in transactions">
+    <tr ng-repeat="transaction in uncategorized">
         <td>
             <a href="" ng-click=""><b>{{transaction.date}}</b></a>
         </td>
         <td class="tdRight">
             {{transaction.description}}
-        </td>       
+        </td>
         <td class="tdRight">
             {{transaction.amount | currency}}
-        </td>       
+        </td>
         <td class="tdRight">
             {{transaction.account}}
         </td>
+        <td class="tdRight">
+            <label for="addToCategory">Add To Category</label>
+            <select ng-model="transaction.category" class="form-control">
+                <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
+            </select>
+
+            <button class="btn btn-primary" ng-click="addAdvertiserToCategory(transaction)">Submit</button>
+        </td>
     </tr>
 </table>
+
+
+
+<ul>
+    <li ng-repeat="category in categories">
+        {{category.name}}: {{category.amount | currency}}
+    </li>
+</ul>
+
+Total: {{totalAmount | currency}}
