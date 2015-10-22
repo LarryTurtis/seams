@@ -18,7 +18,7 @@
             })
             .when('/budget', {
                 templateUrl: "budget/budget.html",
-                controller: "budget/budget-controller.js"
+                controller: "budgetCtrl"
             })
             .otherwise({
                 redirectTo: "/"

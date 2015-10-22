@@ -1,0 +1,24 @@
+<div class="row-fluid">
+    Finance
+</div>
+
+<table class="table table-bordered">
+    <tr class="well">
+        <td class="tdRight" colspan="{{4 + (admin ? 1 : 0)}}">
+        </td>
+    </tr>
+    <tr ng-repeat="transaction in transactions">
+        <td>
+            <a href="" ng-click=""><b>{{transaction.date}}</b></a>
+        </td>
+        <td class="tdRight">
+            {{transaction.description}}
+        </td>       
+        <td class="tdRight">
+            {{transaction.amount | currency}}
+        </td>       
+        <td class="tdRight">
+            {{transaction.account}}
+        </td>
+    </tr>
+</table>
