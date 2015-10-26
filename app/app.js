@@ -16,6 +16,10 @@
             .when('/', {
                 templateUrl: "partials/main.html"
             })
+            .when('/spend', {
+                templateUrl: "spend/spend.html",
+                controller: "spendCtrl"
+            })
             .when('/budget', {
                 templateUrl: "budget/budget.html",
                 controller: "budgetCtrl"

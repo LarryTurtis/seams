@@ -2,6 +2,7 @@
     "name": "seams",
     "version": "0.0.0",
     "dependencies": {
+    "lodash": "~3.6.0"
     },
     "devDependencies": {
     	"bootstrap": "3.3.5"

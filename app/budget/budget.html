@@ -1,88 +1,22 @@
-<div class="row-fluid">
-    Finance
-</div>
-
-
-<div class="well input-group">
-    <label for="category">Add New Category</label>
-    <input name="category" ng-model="category.name" />
-    <button class="btn btn-primary" ng-click="addCategory()">Submit</button>
-</div>
-
-<div class="well input-group">
-    <label for="startDate">Start Date</label>
-    <input type="date" name="startDate" ng-model="startDate" />
-
-    <label for="endDate">End Date</label>
-    <input type="date" name="endDate" ng-model="endDate" />
-    <button class="btn btn-primary" ng-click="update()">Update</button>
-
-</div>
-
-
-<div ng-if="uncategorized.length">
-    Uncategorized.
-    <table class="table table-bordered">
-        <tr class="well">
-            <td class="tdRight" colspan="5">
-            </td>
-        </tr>
-        <tr ng-repeat="transaction in uncategorized">
-            <td>
-                <a href="" ng-click=""><b>{{transaction.date}}</b></a>
-            </td>
-            <td class="tdRight">
-                {{transaction.description}}
-            </td>
-            <td class="tdRight">
-                {{transaction.amount | currency}}
-            </td>
-            <td class="tdRight">
-                {{transaction.account}}
-            </td>
-            <td class="tdRight">
-                <label for="addToCategory">Add To Category</label>
-                <select ng-model="transaction.category" class="form-control">
-                    <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
-                </select>
-
-                <button class="btn btn-primary" ng-click="addAdvertiserToCategory(transaction)">Submit</button>
-            </td>
-        </tr>
-    </table>
-</div>
-
-
+<a href="#/spend">Spend</a><hr />
+<div>Monthly Income: {{income | currency}}</div>
+<div>Total Allocated: {{total | currency}}</div>
+<div>Remainder:<span class="label" ng-class="{'label-danger': income - total < 0, 'label-success': income - total >= 0}">{{income - total | currency}}</span></div>
+<hr /> 
+<label for="Income">Income</label>
+<input type="number" name="Income" ng-model="income" /><br/><br/>
 <table class="table">
     <tr>
-        <th>Name</th>
+        <th>Category</th>
         <th>Amount</th>
     </tr>
-    <tr ng-repeat="category in categories | orderBy: 'amount'">
-        <td>{{category.name}}</td>
-        <td>{{category.amount | currency}}</td>
-    </tr>
-</table>
-
-Total: {{totalAmount | currency}}
-
-Details
-<table class="table table-bordered">
-    <tr ng-repeat="transaction in transactions">
+    <tr ng-repeat="item in budget">
         <td>
-            {{transaction.date}}
+            <input type="text" name="category" ng-model="item.category" />
         </td>
-        <td class="tdRight">
-            {{transaction.description}}
-        </td>
-        <td class="tdRight">
-            {{transaction.amount | currency}}
-        </td>
-        <td class="tdRight">
-            {{transaction.account}}
-        </td>
-        <td class="tdRight">
-            {{transaction.category}}
+        <td>
+            <input type="text" name="amount" ng-model="item.amount" />
         </td>
     </tr>
 </table>
+<button ng-click="update()">Update Budget</button>

@@ -2,12 +2,12 @@ var http = require("http"),
     express = require("express"),
     favicon = require('serve-favicon'),
     path = require('path'),
+    bodyParser = require("body-parser"),
     upload = require("./lib/fileUpload.js"),
     database = require("./lib/database.js"),
+    passport = require('passport'),
     finDb = require("./lib/finDb.js"),
     auth = require("./lib/authMethods.js"),
-    bodyParser = require("body-parser"),
-    passport = require('passport'),
     expressSession = require('express-session'),
     mongoose = require('mongoose'),
     flash = require('connect-flash'),
@@ -55,11 +55,15 @@ app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, 
 /**
  * Finance methods
  */
-app.post("/api/addAdvertiser", auth.shouldDeny, finDb.addAdvertiser);
-app.get("/api/getAllAdvertisers", auth.shouldDeny, finDb.getAllAdvertisers);
-app.get("/api/getTransactions", auth.shouldDeny, finDb.getTransactions);
-app.post("/api/editAdvertiser", auth.shouldDeny, finDb.editAdvertiser);
-app.post("/api/addCategory", auth.shouldDeny, finDb.addCategory);
+app.post("/api/addAdvertiser", auth.shouldAllow, finDb.addAdvertiser);
+app.post("/api/updateAdvertiser", auth.shouldAllow, finDb.updateAdvertiser);
+app.post("/api/addToBudget", auth.shouldAllow, finDb.addToBudget);
+app.get("/api/getAllAdvertisers", auth.shouldAllow, finDb.getAllAdvertisers);
+app.get("/api/getAllCategories", auth.shouldAllow, finDb.getAllCategories);
+app.get("/api/getBudget", auth.shouldAllow, finDb.getBudget);
+app.get("/api/getTransactions", auth.shouldAllow, finDb.getTransactions);
+app.post("/api/deleteAdvertiser", auth.shouldAllow, finDb.deleteAdvertiser);
+app.post("/api/addCategory", auth.shouldAllow, finDb.addCategory);
 
 
 app.use(function(req, res, next) {
