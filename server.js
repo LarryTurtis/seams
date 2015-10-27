@@ -40,8 +40,12 @@ initPassport(passport);
 
 var routes = require('./lib/routes/index')(passport);
 app.use('/', routes);
+if (app.get('env') === 'development') {
 app.use("/", express.static("app"));
-
+} else {
+app.use("/", express.static("dist"));
+}
+ 
 /**
  * Product methods.
  */

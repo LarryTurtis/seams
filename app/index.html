@@ -3,28 +3,26 @@
 
 <head>
     <title>Seams.</title>
-
-    <!-- jQuery, Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js" type="text/javascript"></script>
-    <script src="../bower_components/lodash/lodash.min.js" type="text/javascript"></script>
 
-    <!--  
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    -->
-    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+<!-- build:[src] ./seams/ -->
+    <script src="app.js" type="text/javascript"></script>    
+    <script src="/bower_components/lodash/lodash.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/seams.css">
 
-    <script src="app.js" type="text/javascript"></script>    
 
-    <script src="./budget/budget-controller.js" type="text/javascript"></script>
-    <script src="./spend/spend-controller.js" type="text/javascript"></script>
-    <script src="./services/seamsFileUpload-service.js" type="text/javascript"></script>
-    <script src="./services/seamsGetProducts-service.js" type="text/javascript"></script>
-    <script src="./directives/seamsFileUpload-directive.js" type="text/javascript"></script>
-    <script src="./directives/seamsAddProduct-directive.js" type="text/javascript"></script>
-    <script src="./directives/seams-shopping-cart/seams-shopping-cart-directive.js" type="text/javascript"></script>
+    <script src="budget/budget-controller.js" type="text/javascript"></script>
+    <script src="spend/spend-controller.js" type="text/javascript"></script>
+    <script src="services/seamsFileUpload-service.js" type="text/javascript"></script>
+    <script src="services/seamsGetProducts-service.js" type="text/javascript"></script>
+    <script src="directives/seamsFileUpload-directive.js" type="text/javascript"></script>
+    <script src="directives/seamsAddProduct-directive.js" type="text/javascript"></script>
+    <script src="directives/seams-shopping-cart/seams-shopping-cart-directive.js" type="text/javascript"></script>
+<!-- /build -->
 </head>
 
 <body ng-controller="seamsCtrl">
