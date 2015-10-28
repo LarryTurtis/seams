@@ -17,6 +17,15 @@ module.exports = function(grunt) {
                 }]
             }
         },
+        ngtemplates: {
+            seams: {
+                src: 'app/**/**.html',
+                dest: 'dist/app.js',
+                options: {
+                    append: true
+                }
+            }
+        },
         copy: {
             main: {
                 files: [{
@@ -30,9 +39,10 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-text-replace');
+    grunt.loadNpmTasks('grunt-angular-templates');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task(s).
-    grunt.registerTask('default', ['copy', 'replace']);
+    grunt.registerTask('default', ['copy', 'replace', 'ngtemplates']);
 
 };
