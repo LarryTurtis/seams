@@ -1,0 +1,16 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+        Upload Data.
+        </h3>
+    </div>
+    <div class="panel-body">
+        <label for="singleSelect">Select Account: </label>
+        <select name="singleSelect" ng-model="account">
+            <option value="amex">American Express</option>
+            <option value="ally">Ally</option>
+            <option value="cp1">Capital One</option>
+        </select>
+        <seams-file-upload account="account"></seams-file-upload>
+    </div>
+</div>

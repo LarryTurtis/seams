@@ -1,4 +1,3 @@
-<a href="#/spend">Spend</a><hr />
 <div>Monthly Income: {{income | currency}}</div>
 <div>Total Allocated: {{total | currency}}</div>
 <div>Remainder:<span class="label" ng-class="{'label-danger': income - total < 0, 'label-success': income - total >= 0}">{{income - total | currency}}</span></div>

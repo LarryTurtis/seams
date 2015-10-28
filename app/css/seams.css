@@ -35,3 +35,10 @@ shopping-cart .thumbnail {
 .table tbody>tr>td.vert-align{
     vertical-align: middle;
 }
+
+.file-input {
+    width: 200px;
+    float: left;
+    display: inline;
+    margin-right: 10px;
+}

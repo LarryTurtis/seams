@@ -17,6 +17,9 @@
                 templateUrl: "spend/spend.html",
                 controller: "spendCtrl"
             })
+            .when("/upload", {
+                templateUrl: "upload/upload.html"
+            })
             .when("/budget", {
                 templateUrl: "budget/budget.html",
                 controller: "budgetCtrl"
@@ -43,6 +46,14 @@
         $scope.checkLocation = function(name) {
             return $location.path() === name;
         };
+
+        $scope.getClass = function(path) {
+            if ($location.path().substr(0, path.length) === path) {
+                return 'active';
+            } else {
+                return '';
+            }
+        }
 
     })
 
