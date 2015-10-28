@@ -5,8 +5,8 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         replace: {
             html: {
-                src: 'app/index.html', // source files array (supports minimatch)
-                dest: 'dist/index.html', // destination directory or file
+                src: 'dist/**/*.html', // source files array (supports minimatch)
+                overwrite: true, // destination directory or file
                 replacements: [{
                     from: '  src="', // string replacement
                     to: ' src="./seams/'
