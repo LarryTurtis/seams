@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         replace: {
-            example: {
+            html: {
                 src: 'app/index.html', // source files array (supports minimatch)
                 dest: 'dist/index.html', // destination directory or file
                 replacements: [{
@@ -14,6 +14,14 @@ module.exports = function(grunt) {
                 {
                     from: '  href="', // string replacement
                     to: ' href="./seams/'
+                }]
+            },
+            js: {
+                src: 'app/app.js', // source files array (supports minimatch)
+                dest: 'dist/app.js', // destination directory or file
+                replacements: [{
+                    from: 'templateUrl: "', // string replacement
+                    to: 'templateUrl: "dist/'
                 }]
             }
         },

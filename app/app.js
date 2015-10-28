@@ -1,26 +1,26 @@
-'use strict';
+"use strict";
 
 (function(angular) {
 
-    angular.module('seams', ['ngRoute', 'AngularStore'])
+    angular.module("seams", ["ngRoute", "AngularStore"])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(["$routeProvider", function($routeProvider) {
 
         $routeProvider
-            .when('/error', {
-                templateUrl: 'partials/error.html'
+            .when("/error", {
+                templateUrl: "partials/error.html"
             })
-            .when('/shop', {
+            .when("/shop", {
                 templateUrl: "partials/shop.html"
             })
-            .when('/', {
+            .when("/", {
                 templateUrl: "partials/main.html"
             })
-            .when('/spend', {
+            .when("/spend", {
                 templateUrl: "spend/spend.html",
                 controller: "spendCtrl"
             })
-            .when('/budget', {
+            .when("/budget", {
                 templateUrl: "budget/budget.html",
                 controller: "budgetCtrl"
             })
@@ -50,7 +50,7 @@
 
     })
 
-    .filter('capitalize', function() {
+    .filter("capitalize", function() {
         return function(input, scope) {
             if (input != null)
                 input = input.toLowerCase();
