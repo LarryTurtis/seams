@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                 },
                 {
                     from: '  href="', // string replacement
-                    to: ' href="./seams/'
+                    to: ' href="./seams'
                 }]
             },
             js: {
