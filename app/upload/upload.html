@@ -1,3 +1,5 @@
+<div class="alert alert-danger" ng-hide="isAdmin"><h2>You must <a  href="/login">login.</a></h2></div>
+<div ng-show="isAdmin">
 <div class="panel panel-info">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -13,4 +15,5 @@
         </select>
         <seams-file-upload account="account"></seams-file-upload>
     </div>
+</div>
 </div>

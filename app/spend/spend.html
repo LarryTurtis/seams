@@ -1,3 +1,6 @@
+<div class="alert alert-danger" ng-hide="isAdmin"><h2>You must <a  href="/login">login.</a></h2></div>
+<div ng-show="isAdmin">
+
 <div>
     <h3>Total Spend: <span class="label label-default">{{totalAmount | currency}}</span></h3>
 </div>
@@ -96,3 +99,4 @@
         </td>
     </tr>
 </table>
+</div>

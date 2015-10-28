@@ -1,3 +1,5 @@
+<div class="alert alert-danger" ng-hide="isAdmin"><h2>You must <a  href="/login">login.</a></h2></div>
+<div ng-show="isAdmin">
 <div>Monthly Income: {{income | currency}}</div>
 <div>Total Allocated: {{total | currency}}</div>
 <div>Remainder:<span class="label" ng-class="{'label-danger': income - total < 0, 'label-success': income - total >= 0}">{{income - total | currency}}</span></div>
@@ -19,3 +21,4 @@
     </tr>
 </table>
 <button ng-click="update()">Update Budget</button>
+</div>

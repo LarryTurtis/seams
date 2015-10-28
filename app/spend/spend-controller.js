@@ -3,7 +3,7 @@
 
     angular.module('seams')
 
-    .controller("spendCtrl", function($scope, $http) {
+    .controller("spendCtrl", function($scope, $http, seamsAuthService) {
 
         $scope.isAdmin = false;
         $scope.categories = [];
@@ -22,12 +22,12 @@
             $scope.transactions = [];
             $scope.categories = [];
             $scope.totalAmount = 0;
+            $scope.isAdmin = seamsAuthService.getAuth();
 
             $http.get('/api/getTransactions?startDate=' + $scope.startDate + '&endDate=' + $scope.endDate).then(function(result) {
                 $scope.transactions = result.data;
-                if (result.headers("Authorization")) {
-                    $scope.isAdmin = true;
-                }
+                seamsAuthService.setAuth(true);
+                $scope.isAdmin = seamsAuthService.getAuth();
 
                 _.remove($scope.transactions, function(n) {
                     return n.amount > 0;

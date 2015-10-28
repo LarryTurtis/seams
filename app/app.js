@@ -11,37 +11,28 @@
                 templateUrl: "partials/error.html"
             })
             .when("/", {
-                templateUrl: "partials/main.html"
+                redirectTo: "spend"
             })
             .when("/spend", {
                 templateUrl: "spend/spend.html",
                 controller: "spendCtrl"
             })
             .when("/upload", {
-                templateUrl: "upload/upload.html"
+                templateUrl: "upload/upload.html",
+                controller: "uploadCtrl"
             })
             .when("/budget", {
                 templateUrl: "budget/budget.html",
                 controller: "budgetCtrl"
             })
             .otherwise({
-                redirectTo: "/"
+                redirectTo: "spend"
             })
     }])
 
-    .controller("seamsCtrl", function($http, $scope, $location) {
+    .controller("seamsCtrl", function($http, $scope, $location, seamsAuthService) {
 
-        $scope.isAdmin = false;
-
-        $http.get('/api/getBudget').then(function(result) {
-            if (result.headers("Authorization")) {
-                $scope.isAdmin = true;
-            }
-        });
-
-        $scope.$on("notAuthorized", function() {
-            $location.path("/error");
-        });
+        $scope.isAdmin = seamsAuthService.getAuth();
 
         $scope.checkLocation = function(name) {
             return $location.path() === name;

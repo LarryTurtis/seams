@@ -13,12 +13,15 @@
                         $scope.file = file;
                     });
                 },
-                controller: function($scope, seamsFileUploadService) {
+                controller: function($scope, seamsFileUploadService, $location, $timeout) {
                     $scope.upload = function() {
                         if ($scope.account) {
                             $scope.message = "";
-                            seamsFileUploadService.upload($scope.file, $scope.account).then(function(result) {
-                                console.log(result)
+                            seamsFileUploadService.upload($scope.file, $scope.account).then(function() {
+                                $scope.message = "Complete."
+                                $timeout(function(){
+                                    $scope.message = "";
+                                },2000)
                             })
                         } else {
                             $scope.message = "You must select an account.";
