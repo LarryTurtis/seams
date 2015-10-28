@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                 overwrite: true,
                 replacements: [{
                     from: 'action="/', // string replacement
-                    to: 'action=":/seams/'
+                    to: 'action="/seams/'
                 },{
                     from: 'href="/', // string replacement
                     to: 'href="/seams/'
