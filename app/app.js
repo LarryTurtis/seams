@@ -2,16 +2,13 @@
 
 (function(angular) {
 
-    angular.module("seams", ["ngRoute", "AngularStore"])
+    angular.module("seams", ["ngRoute"])
 
     .config(["$routeProvider", function($routeProvider) {
 
         $routeProvider
             .when("/error", {
                 templateUrl: "partials/error.html"
-            })
-            .when("/shop", {
-                templateUrl: "partials/shop.html"
             })
             .when("/", {
                 templateUrl: "partials/main.html"
@@ -29,12 +26,11 @@
             })
     }])
 
-    .controller("seamsCtrl", function($scope, $location, seamsGetProducts) {
+    .controller("seamsCtrl", function($http, $scope, $location) {
 
         $scope.isAdmin = false;
 
-        seamsGetProducts.getProducts().then(function(result) {
-            $scope.products = result.data;
+        $http.get('/api/getBudget').then(function(result) {
             if (result.headers("Authorization")) {
                 $scope.isAdmin = true;
             }

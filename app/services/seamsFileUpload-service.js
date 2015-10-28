@@ -10,12 +10,14 @@
                     return true;
                 case "image/jpeg":
                     return true;
+                case "text/csv":
+                    return true;
                 default:
                     return false;
             }
         };
 
-        var upload = function(file, destination) {
+        var upload = function(file, account) {
             if (verifyImage(file.type)) {
                 var fd = new FormData();
                 fd.append('avatar', file);
@@ -23,7 +25,8 @@
                     transformRequest: angular.identity,
                     headers: {
                         'Content-Type': undefined,
-                        'destination': "./app" + destination
+                        'destination': "data",
+                        'account': account
                     }
                 });
             }

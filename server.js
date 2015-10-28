@@ -12,7 +12,8 @@ var folder,
     expressSession = require('express-session'),
     mongoose = require('mongoose'),
     flash = require('connect-flash'),
-    app = express();
+    app = express(),
+    csv = require("./lib/csv-transform.js");
 
 app.use(favicon(__dirname + '/app/img/favicon.ico'));
 
@@ -56,7 +57,8 @@ app.use("/", express.static(folder));
 app.post("/api/dbCreate", auth.shouldDeny, database.createRecord);
 app.post("/api/dbDelete", auth.shouldDeny, database.deleteRecord);
 app.post("/api/db", auth.shouldAllow, database.getRecord);
-app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, res) {
+app.post("/api/upload", upload.single("avatar"), auth.shouldAllow, function(req, res) {
+    csv.csvTransform(req.headers.destination + "/" + req.file.filename, req.headers.account);
     res.send(req.file);
 });
 

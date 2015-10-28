@@ -12,6 +12,7 @@
     "grunt-contrib-concat": "0.5.1",
     "grunt-contrib-copy": "0.8.2",
     "grunt-angular-templates": "0.5.7",
+    "concat-files": "0.1.0",
     "mongodb": "2.0.42",
     "express": "4.13.3",
     "multer": "1.0.3",
