@@ -3,14 +3,18 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        processhtml: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-            },
-            dist: {
-                files: {
-                    'dist/index.html': ['app/index.html']
-                }
+        replace: {
+            example: {
+                src: 'app/index.html', // source files array (supports minimatch)
+                dest: 'dist/index.html', // destination directory or file
+                replacements: [{
+                    from: '  src="', // string replacement
+                    to: ' src="./seams/'
+                },
+                {
+                    from: '  href="', // string replacement
+                    to: ' href="./seams/'
+                }]
             }
         },
         copy: {
@@ -25,10 +29,10 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-processhtml');
+    grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task(s).
-    grunt.registerTask('default', ['copy', 'processhtml']);
+    grunt.registerTask('default', ['copy', 'replace']);
 
 };
