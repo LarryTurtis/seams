@@ -1,4 +1,5 @@
-var http = require("http"),
+var folder,
+    http = require("http"),
     express = require("express"),
     favicon = require('serve-favicon'),
     path = require('path'),
@@ -17,7 +18,14 @@ app.use(favicon(__dirname + '/app/img/favicon.ico'));
 
 mongoose.connect("mongodb://localhost:27017/test");
 
-app.set('views', path.join(__dirname, '/lib/views'));
+if (app.get('env') === 'development') {
+    folder = "app"
+} else {
+    folder = "dist"
+}
+
+
+app.set('views', path.join(__dirname, '/' + folder + '/views'));
 app.set('view engine', 'jade');
 
 app
@@ -40,12 +48,8 @@ initPassport(passport);
 
 var routes = require('./lib/routes/index')(passport);
 app.use('/', routes);
-if (app.get('env') === 'development') {
-app.use("/", express.static("app"));
-} else {
-app.use("/", express.static("dist"));
-}
- 
+app.use("/", express.static(folder));
+
 /**
  * Product methods.
  */
@@ -72,8 +76,13 @@ app.post("/api/addCategory", auth.shouldAllow, finDb.addCategory);
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
-    var message = {message: "Page Not Found.", error: {status:404}}
-        err.status = 404;
+    var message = {
+        message: "Page Not Found.",
+        error: {
+            status: 404
+        }
+    }
+    err.status = 404;
     if (app.get('env') === 'development') {
         message = {
             message: err.message,

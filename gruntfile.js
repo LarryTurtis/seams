@@ -26,6 +26,17 @@ module.exports = function(grunt) {
                     from: '/api/', // string replacement
                     to: '/seams/api/'
                 }]
+            },
+            jade: {
+                src: 'dist/**/*.jade', // source files array (supports minimatch)
+                overwrite: true,
+                replacements: [{
+                    from: 'action="/', // string replacement
+                    to: 'action=":/seams/'
+                },{
+                    from: 'href="/', // string replacement
+                    to: 'href="/seams/'
+                }]
             }
         },
         ngtemplates: {
