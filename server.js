@@ -65,15 +65,15 @@ app.post("/api/upload", upload.single("avatar"), auth.shouldAllow, function(req,
 /**
  * Finance methods
  */
-app.post("/api/addAdvertiser", auth.shouldAllow, finDb.addAdvertiser);
-app.post("/api/updateAdvertiser", auth.shouldAllow, finDb.updateAdvertiser);
-app.post("/api/addToBudget", auth.shouldAllow, finDb.addToBudget);
-app.get("/api/getAllAdvertisers", auth.shouldAllow, finDb.getAllAdvertisers);
-app.get("/api/getAllCategories", auth.shouldAllow, finDb.getAllCategories);
-app.get("/api/getBudget", auth.shouldAllow, finDb.getBudget);
-app.get("/api/getTransactions", auth.shouldAllow, finDb.getTransactions);
-app.post("/api/deleteAdvertiser", auth.shouldAllow, finDb.deleteAdvertiser);
-app.post("/api/addCategory", auth.shouldAllow, finDb.addCategory);
+app.post("/api/addAdvertiser", auth.shouldDeny, finDb.addAdvertiser);
+app.post("/api/updateAdvertiser", auth.shouldDeny, finDb.updateAdvertiser);
+app.post("/api/addToBudget", auth.shouldDeny, finDb.addToBudget);
+app.get("/api/getAllAdvertisers", auth.shouldDeny, finDb.getAllAdvertisers);
+app.get("/api/getAllCategories", auth.shouldDeny, finDb.getAllCategories);
+app.get("/api/getBudget", auth.shouldDeny, finDb.getBudget);
+app.get("/api/getTransactions", auth.shouldDeny, finDb.getTransactions);
+app.post("/api/deleteAdvertiser", auth.shouldDeny, finDb.deleteAdvertiser);
+app.post("/api/addCategory", auth.shouldDeny, finDb.addCategory);
 
 
 app.use(function(req, res, next) {
