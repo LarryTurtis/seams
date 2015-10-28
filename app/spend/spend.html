@@ -13,12 +13,15 @@
 <hr/>
 <div class="well input-group">
     <label for="startDate">Start Date</label>
-    <input type="date" name="startDate" ng-model="startDate" />
+    <input style="margin: 10px" type="date" name="startDate" ng-model="startDate" />
 
     <label for="endDate">End Date</label>
-    <input type="date" name="endDate" ng-model="endDate" />
-    <button class="btn btn-primary" ng-click="update()">Update</button>
+    <input style="margin: 10px" type="date" name="endDate" ng-model="endDate" />
 
+    <label for="amortizeBudget">Amortize Budget</label>
+    <input style="margin: 10px" type="checkbox" name="amortizeBudget" ng-model="amortizeBudget" />
+
+    <button class="btn btn-primary" ng-click="update()">Update</button>
 </div>
 
 

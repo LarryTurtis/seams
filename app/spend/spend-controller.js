@@ -11,6 +11,7 @@
         $scope.totalAmount = 0;
         $scope.totalBudget = 0;
         $scope.update = update;
+        $scope.amortizeBudget = true;
 
         var date = new Date();
         $scope.startDate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -35,8 +36,16 @@
 
                 return $http.get('/api/getBudget').then(function(result) {
 
+                    var numberOfDays = ($scope.endDate - $scope.startDate) / 1000 / 60 / 60 / 24;
                     var budget = result.data;
-                    $scope.totalBudget = _.sum(budget, function(item){
+
+                    if ($scope.amortizeBudget) {
+                        budget.forEach(function(item) {
+                            item.amount = (item.amount * 12) / 365 * numberOfDays;
+                        });
+                    }
+
+                    $scope.totalBudget = _.sum(budget, function(item) {
                         return item.amount;
                     });
 
@@ -46,7 +55,7 @@
                         $scope.transactions.forEach(function(transaction) {
 
                             $scope.advertisers.forEach(function(advertiser) {
-                                
+
                                 //get a matching budget for this advertiser's category
                                 var budgetedAmount = _.find(budget, function(item) {
                                     return item.category === advertiser.category
