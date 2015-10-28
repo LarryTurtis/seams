@@ -17,11 +17,14 @@ module.exports = function(grunt) {
                 }]
             },
             js: {
-                src: 'app/app.js', // source files array (supports minimatch)
-                dest: 'dist/app.js', // destination directory or file
+                src: 'dist/**/*.js', // source files array (supports minimatch)
+                overwrite: true,
                 replacements: [{
                     from: 'templateUrl: "', // string replacement
                     to: 'templateUrl: "dist/'
+                },{
+                    from: '/api/', // string replacement
+                    to: '/seams/api/'
                 }]
             }
         },
