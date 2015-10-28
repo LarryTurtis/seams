@@ -23,9 +23,6 @@ module.exports = function(grunt) {
                     from: 'templateUrl: "', // string replacement
                     to: 'templateUrl: "dist/'
                 },{
-                    from: 'redirectTo: "', // string replacement
-                    to: 'redirectTo: "dist/'
-                },{
                     from: '/api/', // string replacement
                     to: '/seams/api/'
                 }]
