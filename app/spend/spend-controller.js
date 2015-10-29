@@ -24,6 +24,7 @@
             $scope.transactions = [];
             $scope.categories = [];
             $scope.totalAmount = 0;
+            $scope.totalBudget = 0;
             $scope.isAdmin = seamsAuthService.getAuth();
 
             $http.get('/api/getTransactions?startDate=' + $scope.startDate + '&endDate=' + $scope.endDate)

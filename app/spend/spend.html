@@ -90,7 +90,7 @@
                     <th>Amount</th>
                     <th>Account</th>
                     <th>Update Category</th>
-                    <tr ng-repeat="transaction in category.transactions | orderBy: 'date'">
+                    <tr ng-repeat="transaction in category.transactions | orderBy: 'amount' : reverse">
                         <td>
                             {{transaction.date}}
                         </td>
