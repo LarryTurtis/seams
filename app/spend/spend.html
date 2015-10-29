@@ -5,15 +5,33 @@
     <div class="alert alert-danger" ng-show="error">
         <h5>{{error}}</h5>
     </div>
-    <div>
-        <h3>Total Spend: <span class="label label-default">{{totalAmount | currency}}</span></h3>
+
+    <div class="row">
+        <table class="table table-condensed">
+            <tr>
+                <td>Total Spend:</td>
+                <td>
+                    <h4><span class="label label-default">{{totalAmount | currency}}</h4>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>Total Monthly Budget:</td>
+                <td>
+                    <h4><span class="label label-info">{{totalBudget | currency}}</h4>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>Difference:</td>
+                <td>
+                    <h4><span class="label label-default" ng-class="{'label-danger': totalBudget > 0, 'label-success': totalBudget <= 0}">{{totalBudget + totalAmount | currency}}</h4>
+                    </span>
+                </td>
+            </tr>
+        </table>
     </div>
-    <div>
-        <h3>Total Monthly Budget: <span class="label label-info">{{totalBudget | currency}}</span></h3>
-    </div>
-    <div>
-        <h3>Difference: <span class="label label-default" ng-class="{'label-danger': totalBudget > 0, 'label-success': totalBudget <= 0}">{{totalBudget + totalAmount | currency}}</span></h3>
-    </div>
+
     <hr/>
     <div class="well input-group">
         <label for="startDate">Start Date</label>
@@ -120,4 +138,18 @@
             </td>
         </tr>
     </table>
+    <div class="col-md-6 well" style="float: right; font-size: 12px;">
+    Last Updated:
+        <ul>
+            <li>
+                Ally: {{updated.ally | date}}
+            </li>
+            <li>
+                Amex: {{updated.amex | date}}
+            </li>
+            <li>
+            Capital One: {{updated.cp1 | date}}
+            </li>
+        </ul>
+    </div>
 </div>

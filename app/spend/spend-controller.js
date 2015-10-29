@@ -29,7 +29,9 @@
 
             $http.get('/api/getTransactions?startDate=' + $scope.startDate + '&endDate=' + $scope.endDate)
                 .then(function(result) {
-                    $scope.transactions = result.data;
+                    console.log(result)
+                    $scope.transactions = result.data[0];
+                    $scope.updated = result.data[1];
                     seamsAuthService.setAuth(true);
                     $scope.isAdmin = seamsAuthService.getAuth();
 
