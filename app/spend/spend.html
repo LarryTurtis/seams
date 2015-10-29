@@ -1,105 +1,123 @@
-<div class="alert alert-danger" ng-hide="isAdmin"><h2>You must <a  href="/login">login.</a></h2></div>
+<div class="alert alert-danger" ng-hide="isAdmin">
+    <h2>You must <a  href="/login">login.</a></h2>
+</div>
 <div ng-show="isAdmin">
+    <div class="alert alert-danger" ng-show="error">
+        <h5>{{error}}</h5>
+    </div>
+    <div>
+        <h3>Total Spend: <span class="label label-default">{{totalAmount | currency}}</span></h3>
+    </div>
+    <div>
+        <h3>Total Monthly Budget: <span class="label label-info">{{totalBudget | currency}}</span></h3>
+    </div>
+    <div>
+        <h3>Difference: <span class="label label-default" ng-class="{'label-danger': totalBudget > 0, 'label-success': totalBudget <= 0}">{{totalBudget + totalAmount | currency}}</span></h3>
+    </div>
+    <hr/>
+    <div class="well input-group">
+        <label for="startDate">Start Date</label>
+        <input style="margin: 10px" type="date" name="startDate" ng-model="startDate" />
 
-<div>
-    <h3>Total Spend: <span class="label label-default">{{totalAmount | currency}}</span></h3>
-</div>
-<div>
-    <h3>Total Monthly Budget: <span class="label label-info">{{totalBudget | currency}}</span></h3>
-</div>
-<div>
-    <h3>Difference: <span class="label label-default" ng-class="{'label-danger': totalBudget > 0, 'label-success': totalBudget <= 0}">{{totalBudget + totalAmount | currency}}</span></h3>
-</div>
-<hr/>
-<div class="well input-group">
-    <label for="startDate">Start Date</label>
-    <input style="margin: 10px" type="date" name="startDate" ng-model="startDate" />
+        <label for="endDate">End Date</label>
+        <input style="margin: 10px" type="date" name="endDate" ng-model="endDate" />
 
-    <label for="endDate">End Date</label>
-    <input style="margin: 10px" type="date" name="endDate" ng-model="endDate" />
+        <label for="amortizeBudget">Amortize Budget</label>
+        <input style="margin: 10px" type="checkbox" name="amortizeBudget" ng-model="amortizeBudget" />
 
-    <label for="amortizeBudget">Amortize Budget</label>
-    <input style="margin: 10px" type="checkbox" name="amortizeBudget" ng-model="amortizeBudget" />
-
-    <button class="btn btn-primary" ng-click="update()">Update</button>
-</div>
+        <button class="btn btn-primary" ng-click="update()">Update</button>
+    </div>
 
 
-<div ng-if="uncategorized.length">
-    Uncategorized.
-    <table class="table table-bordered">
-        <tr class="well">
-            <td class="tdRight" colspan="5">
-            </td>
+    <div ng-if="uncategorized.length">
+        Uncategorized.
+        <table class="table table-bordered">
+            <tr class="well">
+                <td class="tdRight" colspan="5">
+                </td>
+            </tr>
+            <tr ng-repeat="transaction in uncategorized">
+                <td>
+                    <a href="" ng-click=""><b>{{transaction.date}}</b></a>
+                </td>
+                <td class="tdRight">
+                    {{transaction.description}}
+                </td>
+                <td class="tdRight">
+                    {{transaction.amount | currency}}
+                </td>
+                <td class="tdRight">
+                    {{transaction.account}}
+                </td>
+                <td class="tdRight">
+                    <div class="input-group">
+                        <label for="addToCategory">Add To Category</label>
+                        <select ng-model="transaction.category" class="form-control">
+                            <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
+                        </select>
+                        <button class="btn btn-primary" ng-click="addAdvertiserToCategory(transaction)">Submit</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Budget</th>
+            <th>Over/Under</th>
+            <th>Details</th>
         </tr>
-        <tr ng-repeat="transaction in uncategorized">
+        <tr ng-repeat="category in categories | orderBy: 'amount'">
+            <td><a href="" ng-click="category.show = !category.show">{{category.name}}</a>
+            </td>
             <td>
-                <a href="" ng-click=""><b>{{transaction.date}}</b></a>
+                <h4><span class="label label-default">{{category.amount | currency}}</span></h4>
             </td>
-            <td class="tdRight">
-                {{transaction.description}}
+            <td>
+                <h4><span class="label label-info">{{category.budget | currency}}</span></h4>
             </td>
-            <td class="tdRight">
-                {{transaction.amount | currency}}
+            <td>
+                <h4><span class="label label-default" ng-class="{'label-danger': category.diff < 0, 'label-success': category.diff >= 0}">{{category.diff | currency}}</span></h4>
             </td>
-            <td class="tdRight">
-                {{transaction.account}}
-            </td>
-            <td class="tdRight">
-                <label for="addToCategory">Add To Category</label>
-                <select ng-model="transaction.category" class="form-control">
-                    <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
-                </select>
-
-                <button class="btn btn-primary" ng-click="addAdvertiserToCategory(transaction)">Submit</button>
+            <td>
+                <table ng-if="category.show" class="table table-borderless">
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Account</th>
+                    <th>Update Category</th>
+                    <tr ng-repeat="transaction in category.transactions | orderBy: 'date'">
+                        <td>
+                            {{transaction.date}}
+                        </td>
+                        <td class="tdRight">
+                            {{transaction.description}}
+                        </td>
+                        <td class="tdRight">
+                            <h4><span class="label label-default">{{transaction.amount | currency}}</span></h4>
+                        </td>
+                        <td class="tdRight">
+                            {{transaction.account}}
+                        </td>
+                        <td class="tdRight">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <select style="width: 100px" ng-model="transaction.newCategory" class="form-control">
+                                        <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-secondary" ng-click="changeAdvertiser(transaction)">Update</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
-</div>
-
-
-<table class="table">
-    <tr>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Budget</th>
-        <th>Over/Under</th>
-        <th>Details</th>
-    </tr>
-    <tr ng-repeat="category in categories | orderBy: 'amount'">
-        <td><a href="" ng-click="category.show = !category.show">{{category.name}}</a>
-        </td>
-        <td>
-            <h4><span class="label label-default">{{category.amount | currency}}</span></h4>
-        </td>
-        <td>
-            <h4><span class="label label-info">{{category.budget | currency}}</span></h4>
-        </td>
-        <td>
-            <h4><span class="label label-default" ng-class="{'label-danger': category.diff < 0, 'label-success': category.diff >= 0}">{{category.diff | currency}}</span></h4>
-        </td>
-        <td>
-            <table ng-if="category.show" class="table table-borderless">
-                <th>Date</th>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Account</th>
-                <tr ng-repeat="transaction in category.transactions | orderBy: 'date'">
-                    <td>
-                        {{transaction.date}}
-                    </td>
-                    <td class="tdRight">
-                        {{transaction.description}}
-                    </td>
-                    <td class="tdRight">
-                        <h4><span class="label label-default">{{transaction.amount | currency}}</span></h4>
-                    </td>
-                    <td class="tdRight">
-                        {{transaction.account}}
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
 </div>

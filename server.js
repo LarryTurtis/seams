@@ -60,7 +60,7 @@ app.post("/api/db", auth.shouldAllow, database.getRecord);
 app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, res) {
     csv.csvTransform(req.headers.destination + "/" + req.file.filename, req.headers.account);
     res.send(req.file);
-});
+}); 
 
 /**
  * Finance methods
