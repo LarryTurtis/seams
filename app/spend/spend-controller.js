@@ -13,6 +13,11 @@
         $scope.totalBudget = 0;
         $scope.update = update;
         $scope.amortizeBudget = true;
+        $scope.updated = {
+            amex: new Date(2001, 1, 1),
+            ally: new Date(2001, 1, 1),
+            cp1: new Date(2001, 1, 1)
+        }
 
         var date = new Date();
         $scope.startDate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -29,9 +34,7 @@
 
             $http.get('/api/getTransactions?startDate=' + $scope.startDate + '&endDate=' + $scope.endDate)
                 .then(function(result) {
-                    console.log(result)
-                    $scope.transactions = result.data[0];
-                    $scope.updated = result.data[1];
+                    $scope.transactions = result.data;
                     seamsAuthService.setAuth(true);
                     $scope.isAdmin = seamsAuthService.getAuth();
 
@@ -63,6 +66,7 @@
                             $scope.advertisers = result.data;
 
                             $scope.transactions.forEach(function(transaction) {
+                                checkDate(transaction);
 
                                 $scope.advertisers.forEach(function(advertiser) {
 
@@ -123,6 +127,10 @@
 
         function errorCb(error) {
             $scope.error = error.data;
+        }
+
+        function checkDate(transaction) {
+            $scope.updated[transaction.account] = new Date(transaction.modified) > $scope.updated[transaction.account] ? transaction.modified : $scope.updated[transaction.account]
         }
 
 

@@ -54,9 +54,9 @@
                 <td class="tdRight" colspan="5">
                 </td>
             </tr>
-            <tr ng-repeat="transaction in uncategorized">
+            <tr ng-repeat="transaction in uncategorized | orderBy: 'date'">
                 <td>
-                    <a href="" ng-click=""><b>{{transaction.date}}</b></a>
+                    <a href="" ng-click=""><b>{{transaction.date | date}}</b></a>
                 </td>
                 <td class="tdRight">
                     {{transaction.description}}
@@ -110,7 +110,7 @@
                     <th>Update Category</th>
                     <tr ng-repeat="transaction in category.transactions | orderBy: 'amount' : reverse">
                         <td>
-                            {{transaction.date}}
+                            {{transaction.date | date}}
                         </td>
                         <td class="tdRight">
                             {{transaction.description}}
