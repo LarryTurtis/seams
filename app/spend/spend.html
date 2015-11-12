@@ -25,7 +25,7 @@
             <tr>
                 <td>Difference:</td>
                 <td>
-                    <h4><span class="label label-default" ng-class="{'label-danger': totalBudget > 0, 'label-success': totalBudget <= 0}">{{totalBudget + totalAmount | currency}}</h4>
+                    <h4><span class="label label-default" ng-class="{'label-danger': totalBudget <= 0, 'label-success': totalBudget > 0}">{{totalBudget + totalAmount | currency}}</h4>
                     </span>
                 </td>
             </tr>
