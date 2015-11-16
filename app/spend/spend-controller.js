@@ -7,8 +7,7 @@
 
         $scope.isAdmin = false;
         $scope.categories = [];
-        $scope.addAdvertiserToCategory = addAdvertiserToCategory;
-        $scope.changeAdvertiser = changeAdvertiser;
+        $scope.updateTransaction = updateTransaction;
         $scope.totalAmount = 0;
         $scope.totalBudget = 0;
         $scope.update = update;
@@ -27,7 +26,7 @@
 
         function update() {
             $scope.transactions = [];
-            $scope.categories = [];
+            $scope.categories = [{name: 'Transfer'}];
             $scope.totalAmount = 0;
             $scope.totalBudget = 0;
             $scope.isAdmin = seamsAuthService.getAuth();
@@ -39,8 +38,11 @@
                     $scope.isAdmin = seamsAuthService.getAuth();
 
                     _.remove($scope.transactions, function(n) {
-                        return n.amount > 0;
+                        checkDate(n)
+                        return n.amount > 0 || n.category === 'Transfer';
                     });
+
+                    $scope.totalAmount = _.sum($scope.transactions, 'amount')
 
                     return $http.get('/api/getBudget').then(function(result) {
 
@@ -49,55 +51,24 @@
 
                         budget.forEach(function(item) {
 
+                            var transactionsAmount = _.sum($scope.transactions, function(object) {
+                                if (object.category === item.category) return object.amount;
+                            });
+
                             if ($scope.amortizeBudget) {
                                 item.amount = (item.amount * 12) / 365 * numberOfDays;
                             }
+
+                            var diff = item.amount + transactionsAmount;
+
                             $scope.categories.push({
                                 name: item.category,
                                 transactions: [],
-                                amount: 0,
+                                amount: transactionsAmount,
                                 budget: item.amount,
-                                diff: item.amount
+                                diff: diff
                             });
                             $scope.totalBudget += item.amount;
-                        });
-
-                        return $http.get('/api/getAllAdvertisers').then(function(result) {
-                            $scope.advertisers = result.data;
-
-                            $scope.transactions.forEach(function(transaction) {
-                                checkDate(transaction);
-
-                                $scope.advertisers.forEach(function(advertiser) {
-
-                                    //we have found a matching advertiser for this transaction
-                                    if (transaction.description === advertiser.name) {
-
-                                        //assign this transaction to its appropriate category
-                                        transaction.category = advertiser.category;
-
-                                        //check if we have already added this category to the scope
-                                        var cat = _.find($scope.categories, function(category) {
-                                            return category.name === transaction.category;
-                                        });
-
-                                        if (cat) {
-                                            cat.amount += transaction.amount;
-                                            cat.transactions.push(transaction)
-                                            cat.diff += transaction.amount
-                                        }
-
-                                    }
-
-                                });
-
-                                //hide account transfers.
-                                if (transaction.category && transaction.category !== 'Transfer') $scope.totalAmount += transaction.amount;
-                            });
-
-                            $scope.uncategorized = _.filter($scope.transactions, function(n) {
-                                return !n.category;
-                            });
                         });
 
                     }, errorCb)
@@ -105,22 +76,12 @@
                 });
         }
 
-        function changeAdvertiser(transaction) {
-            var advertiser = {
-                name: transaction.description,
+        function updateTransaction(transaction) {
+            var transaction = {
+                reference: transaction.reference,
                 category: transaction.newCategory
             }
-            $http.post('/api/updateAdvertiser', advertiser).then(function() {
-                update();
-            }, errorCb);
-        }
-
-        function addAdvertiserToCategory(transaction) {
-            var advertiser = {
-                name: transaction.description,
-                category: transaction.category
-            }
-            $http.post('/api/addAdvertiser', advertiser).then(function() {
+            $http.post('/api/updateTransaction', transaction).then(function() {
                 update();
             }, errorCb);
         }
@@ -132,7 +93,6 @@
         function checkDate(transaction) {
             $scope.updated[transaction.account] = new Date(transaction.modified) > $scope.updated[transaction.account] ? transaction.modified : $scope.updated[transaction.account]
         }
-
 
     })
 

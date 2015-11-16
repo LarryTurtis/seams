@@ -47,38 +47,36 @@
     </div>
 
 
-    <div ng-if="uncategorized.length">
-        Uncategorized.
-        <table class="table table-bordered">
-            <tr class="well">
-                <td class="tdRight" colspan="5">
-                </td>
-            </tr>
-            <tr ng-repeat="transaction in uncategorized | orderBy: 'date'">
-                <td>
-                    <a href="" ng-click=""><b>{{transaction.date | date}}</b></a>
-                </td>
-                <td class="tdRight">
-                    {{transaction.description}}
-                </td>
-                <td class="tdRight">
-                    {{transaction.amount | currency}}
-                </td>
-                <td class="tdRight">
-                    {{transaction.account}}
-                </td>
-                <td class="tdRight">
-                    <div class="input-group">
-                        <label for="addToCategory">Add To Category</label>
-                        <select ng-model="transaction.category" class="form-control">
-                            <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
-                        </select>
-                        <button class="btn btn-primary" ng-click="addAdvertiserToCategory(transaction)">Submit</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <table class="table table-bordered">
+        <tr class="well">
+            <td class="tdRight" colspan="5">
+            </td>
+        </tr>
+        <tr ng-repeat="transaction in transactions | filter: {category: '!'} | orderBy: 'date'">
+            <td>
+                <a href="" ng-click=""><b>{{transaction.date | date}}</b></a>
+            </td>
+            <td class="tdRight">
+                {{transaction.description}}
+            </td>
+            <td class="tdRight">
+                {{transaction.amount | currency}}
+            </td>
+            <td class="tdRight">
+                {{transaction.account}}
+            </td>
+            <td class="tdRight">
+                <div class="input-group">
+                    <label for="addToCategory">Add To Category</label>
+                    <select ng-model="transaction.newCategory" class="form-control">
+                        <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
+                    </select>
+                    <button class="btn btn-primary" ng-click="updateTransaction(transaction)">Submit</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+
 
 
     <table class="table">
@@ -108,7 +106,7 @@
                     <th>Amount</th>
                     <th>Account</th>
                     <th>Update Category</th>
-                    <tr ng-repeat="transaction in category.transactions | orderBy: 'amount' : reverse">
+                    <tr ng-repeat="transaction in transactions | filter: {category: category.name} | orderBy: 'amount' : reverse">
                         <td>
                             {{transaction.date | date}}
                         </td>
@@ -129,7 +127,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-secondary" ng-click="changeAdvertiser(transaction)">Update</button>
+                                    <button class="btn btn-secondary" ng-click="updateTransaction(transaction)">Update</button>
                                 </div>
                             </div>
                         </td>
@@ -139,7 +137,7 @@
         </tr>
     </table>
     <div class="col-md-6 well" style="float: right; font-size: 12px;">
-    Last Updated:
+        Last Updated:
         <ul>
             <li>
                 Ally: {{updated.ally | date}}
@@ -148,7 +146,7 @@
                 Amex: {{updated.amex | date}}
             </li>
             <li>
-            Capital One: {{updated.cp1 | date}}
+                Capital One: {{updated.cp1 | date}}
             </li>
         </ul>
     </div>

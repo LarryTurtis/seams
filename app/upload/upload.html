@@ -1,19 +1,26 @@
-<div class="alert alert-danger" ng-hide="isAdmin"><h2>You must <a  href="/login">login.</a></h2></div>
+<div class="alert alert-danger" ng-hide="isAdmin">
+    <h2>You must <a  href="/login">login.</a></h2>
+</div>
 <div ng-show="isAdmin">
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <h3 class="panel-title">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
         Upload Data.
         </h3>
+        </div>
+        <div class="panel-body">
+            <label for="singleSelect">Select Account: </label>
+            <select name="singleSelect" ng-model="account">
+                <option value="amex">American Express</option>
+                <option value="ally">Ally</option>
+                <option value="cp1">Capital One</option>
+            </select>
+            <seams-file-upload account="account"></seams-file-upload>
+        </div>
     </div>
-    <div class="panel-body">
-        <label for="singleSelect">Select Account: </label>
-        <select name="singleSelect" ng-model="account">
-            <option value="amex">American Express</option>
-            <option value="ally">Ally</option>
-            <option value="cp1">Capital One</option>
-        </select>
-        <seams-file-upload account="account"></seams-file-upload>
-    </div>
-</div>
+    <button class="btn btn-secondary" ng-click="deleteAllTransactions()">Delete All Transactions</button>
+    <label class="alert alert-danger">Warning! You will lose any individual categorizations you have made. When you re-upload the transactions they will be categorized by advertiser.</label>
+    <span style="color: red">{{message}}</span>
+
+
 </div>
