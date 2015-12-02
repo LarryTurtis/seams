@@ -2,13 +2,14 @@
 var querystring = require('querystring');
 var http = require('https');
 var fs = require('fs');
-var csv = require("./lib/csv-transform.js");
+var csvTransformer = require("./lib/csv-transform.js");
 var file = "/Users/garykertis/seams-upload/data/data1.csv";
+var csv = require('csv');
 var mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/test");
-
-csv.csvTransform(file, "amex");
-var writeStream = fs.createWriteStream(file);
+mongoose.disconnect(function() {
+    mongoose.connect("mongodb://localhost:27017/test");
+});
+var max = require("./max.js");
 
 function PostCode() {
     // Build the post string from an object
@@ -46,14 +47,19 @@ function PostCode() {
 
         var post2 = http.request(options2, function(res) {
             res.setEncoding('utf8');
-            res.on('data', function(chunk) {
-                 writeStream.write(chunk)
-            });
-            res.on('end', function() {
-            	writeStream.end(function(){
-            		csv.csvTransform(file,"amex");
-            	});
-            })
+                var parser = csv.parse({
+                    delimiter: ',',
+                    relax: true,
+                    columns: ["date", "a", "description", "b", "c", "d", "e", "amount", "f", "g", "h", "i", "j", "k", "reference", "l", "m"]  
+                });
+
+                var transformer = csv.transform(csvTransformer.amexTransformer)
+
+                res.pipe(parser).pipe(transformer);
+
+                parser.on("readable", function() {
+                    max.setMax(parser.count);
+                })
         })
 
         post2.write(data2);
