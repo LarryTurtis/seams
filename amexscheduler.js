@@ -23,7 +23,8 @@ function PostCode() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(post_data)
+            'Content-Length': Buffer.byteLength(post_data),
+            'Connection': 'keep-alive'
         }
     };
 
@@ -41,7 +42,8 @@ function PostCode() {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Content-Length': Buffer.byteLength(data2),
-                'Cookie': cookie
+                'Cookie': cookie,
+                'Connection': 'keep-alive'
             }
         };
 
