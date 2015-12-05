@@ -8,6 +8,8 @@
         $scope.isAdmin = false;
         $scope.categories = [];
         $scope.updateTransaction = updateTransaction;
+        $scope.addAdvertiser = addAdvertiser;
+        $scope.updateAdvertiser = updateAdvertiser;
         $scope.totalAmount = 0;
         $scope.totalBudget = 0;
         $scope.update = update;
@@ -26,7 +28,9 @@
 
         function update() {
             $scope.transactions = [];
-            $scope.categories = [{name: 'Transfer'}];
+            $scope.categories = [{
+                name: 'Transfer'
+            }];
             $scope.totalAmount = 0;
             $scope.totalBudget = 0;
             $scope.isAdmin = seamsAuthService.getAuth();
@@ -82,6 +86,36 @@
                 category: transaction.newCategory
             }
             $http.post('/api/updateTransaction', transaction).then(function() {
+                update();
+            }, errorCb);
+        }
+
+        function addAdvertiser(transaction) {
+            var category = {
+                name: transaction.description,
+                category: transaction.newCategory
+            }
+            $http.post('/api/addAdvertiser', category).then(function() {
+                updateTransaction(transaction);
+            }, errorCb);
+        }
+
+        function updateAdvertiser(transaction) {
+            var category = {
+                name: transaction.description,
+                category: transaction.newCategory
+            }
+            $http.post('/api/updateAdvertiser', category).then(function() {
+                updateAllTransactions(transaction);
+            }, errorCb);
+        }
+
+        function updateAllTransactions(transaction) {
+            var allTransactions = {
+                description: transaction.description,
+                category: transaction.newCategory
+            }
+            $http.post('/api/updateAllTransactions', allTransactions).then(function() {
                 update();
             }, errorCb);
         }

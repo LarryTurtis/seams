@@ -73,6 +73,7 @@ app.get("/api/getAllCategories", auth.shouldDeny, finDb.getAllCategories);
 app.get("/api/getBudget", auth.shouldDeny, finDb.getBudget);
 app.get("/api/getTransactions", auth.shouldDeny, finDb.getTransactions);
 app.post("/api/updateTransaction", auth.shouldDeny, finDb.updateTransaction);
+app.post("/api/updateAllTransactions", auth.shouldDeny, finDb.updateAllTransactions);
 app.post("/api/deleteAllTransactions", auth.shouldDeny, finDb.deleteAllTransactions);
 app.post("/api/deleteAdvertiser", auth.shouldDeny, finDb.deleteAdvertiser);
 app.post("/api/addCategory", auth.shouldDeny, finDb.addCategory);

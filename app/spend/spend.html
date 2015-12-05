@@ -71,7 +71,10 @@
                     <select ng-model="transaction.newCategory" class="form-control">
                         <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
                     </select>
-                    <button class="btn btn-primary" ng-click="updateTransaction(transaction)">Submit</button>
+                </div>
+                <div class="btn-group" role="group" style="margin-top: 5px">
+                    <button class="btn btn-primary" ng-click="updateTransaction(transaction)">One</button>
+                    <button class="btn btn-primary" ng-click="addAdvertiser(transaction)">All</button>
                 </div>
             </td>
         </tr>
@@ -121,13 +124,15 @@
                         </td>
                         <td class="tdRight">
                             <div class="form-inline">
-                                <div class="form-group">
-                                    <select style="width: 100px" ng-model="transaction.newCategory" class="form-control">
+                                <div class="input-group">
+                                    <label for="addToCategory">Update Transaction</label>
+                                    <select ng-model="transaction.newCategory" class="form-control">
                                         <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <button class="btn btn-secondary" ng-click="updateTransaction(transaction)">Update</button>
+                                <div class="btn-group" role="group" style="margin-top: 5px">
+                                    <button class="btn btn-primary" ng-click="updateTransaction(transaction)">One</button>
+                                    <button class="btn btn-primary" ng-click="updateAdvertiser(transaction)">All</button>
                                 </div>
                             </div>
                         </td>
