@@ -2,7 +2,8 @@
     "name": "seams",
     "version": "0.0.0",
     "dependencies": {
-    "lodash": "~3.6.0"
+    "lodash": "~3.6.0",
+    "angular-chart.js": "0.8.7"
     },
     "devDependencies": {
     	"bootstrap": "3.3.5"

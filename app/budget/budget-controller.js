@@ -30,5 +30,10 @@
             });
         }
 
+        $scope.$watch('budget', function(){
+            $scope.labels = _.pluck($scope.budget, 'category');
+            $scope.data = _.pluck($scope.budget, 'amount');
+        }, true)
+
     });
 })(angular);

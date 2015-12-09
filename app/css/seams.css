@@ -42,3 +42,21 @@ shopping-cart .thumbnail {
     display: inline;
     margin-right: 10px;
 }
+
+.animate-show {
+    overflow: scroll;
+}
+
+.animate-show.ng-enter, .animate-show.ng-leave {
+  transition: all linear 0.3s;
+}
+
+.animate-show.ng-enter,
+.animate-show.ng-leave.ng-leave-active {
+  max-height:0px;
+}
+
+.animate-show.ng-leave,
+.animate-show.ng-enter.ng-enter-active {
+  max-height: 1000px;
+}

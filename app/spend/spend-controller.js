@@ -3,8 +3,14 @@
 
     angular.module('seams')
 
-    .controller("spendCtrl", function($scope, $http, seamsAuthService) {
+    .controller("spendCtrl", function($scope, $http, seamsAuthService, $filter) {
 
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth();
+        var day = date.getDate();
+        $scope.startDate = new Date(year, month, 1);
+        $scope.endDate = new Date(year, month, day);
         $scope.isAdmin = false;
         $scope.categories = [];
         $scope.updateTransaction = updateTransaction;
@@ -19,18 +25,16 @@
             ally: new Date(2001, 1, 1),
             cp1: new Date(2001, 1, 1)
         }
-
-        var date = new Date();
-        $scope.startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-        $scope.endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        $scope.barseries = ["Budget", "Spend"];
+        $scope.lineseries = ["Spend"];
+        $scope.showlineChart = true;
+        $scope.categoryClick = categoryClick;
 
         update();
 
         function update() {
             $scope.transactions = [];
-            $scope.categories = [{
-                name: 'Transfer'
-            }];
+            $scope.categories = [];
             $scope.totalAmount = 0;
             $scope.totalBudget = 0;
             $scope.isAdmin = seamsAuthService.getAuth();
@@ -73,7 +77,37 @@
                                 diff: diff
                             });
                             $scope.totalBudget += item.amount;
+
+
                         });
+
+                        $scope.showlineChart = (new Date($scope.startDate)).getDate() === 1 &&
+                            (new Date($scope.startDate)).getMonth() === (new Date($scope.endDate)).getMonth();
+
+                        $scope.barlabels = _.pluck(_.sortBy(budget, 'category'), 'category');
+                        $scope.bardata = [_.map(_.pluck(_.sortBy(budget, 'category'), 'amount'), function(n) {
+                            return Math.round(n, 2)
+                        }), _.map(_.pluck(_.sortBy($scope.categories, 'name'), 'amount'), function(n) {
+                            return -Math.round(n, 2);
+                        })];
+
+                        $scope.donutlabels = _.pluck(_.sortBy(budget, 'category'), 'category');
+                        $scope.donutdata = _.map(_.pluck(_.sortBy($scope.categories, 'name'), 'amount'), function(n) {
+                            return -Math.round(n, 2);
+                        });
+
+                        $scope.linelabels = [];
+                        for (var i = 1; i <= (new Date($scope.endDate)).getDate(); i++) {
+                            $scope.linelabels.push(i);
+                        }
+                        $scope.linedata = [new Array($scope.linelabels.length)]
+                        _.fill($scope.linedata[0], 0);
+
+                        angular.forEach($scope.transactions, function(transaction) {
+                            var index = (new Date(transaction.date)).getDate();
+                            $scope.linedata[0][index - 1] += -Math.round(transaction.amount, 2);
+                        });
+
 
                     }, errorCb)
 
@@ -126,6 +160,13 @@
 
         function checkDate(transaction) {
             $scope.updated[transaction.account] = new Date(transaction.modified) > $scope.updated[transaction.account] ? transaction.modified : $scope.updated[transaction.account]
+        }
+
+        function categoryClick(category) {
+            category.show = !category.show;
+            angular.forEach($scope.categories, function(cat) {
+                if (cat !== category) cat.show = false;
+            });
         }
 
     })

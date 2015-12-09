@@ -2,7 +2,7 @@
 
 (function(angular) {
 
-    angular.module("seams", ["ngRoute"])
+    angular.module("seams", ["ngRoute", "ngAnimate", "chart.js"])
 
     .config(["$routeProvider", function($routeProvider) {
 
@@ -49,11 +49,18 @@
     })
 
     .filter("capitalize", function() {
-        return function(input, scope) {
-            if (input != null)
-                input = input.toLowerCase();
-            return input.substring(0, 1).toUpperCase() + input.substring(1);
-        }
-    });
+            return function(input, scope) {
+                if (input != null)
+                    input = input.toLowerCase();
+                return input.substring(0, 1).toUpperCase() + input.substring(1);
+            }
+        })
+        .config(['ChartJsProvider', function(ChartJsProvider) {
+            // Configure all charts
+            ChartJsProvider.setOptions('Bar', {
+                colours: ['#5BC0DF', '#d9534f']
+            });
+
+        }]);
 
 })(angular);
