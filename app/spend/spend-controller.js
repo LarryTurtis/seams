@@ -117,6 +117,9 @@
         function updateTransaction(transaction) {
             var transaction = {
                 reference: transaction.reference,
+                description: transaction.description,
+                account: transaction.account,
+                amount: transaction.amount,
                 category: transaction.newCategory
             }
             $http.post('/api/updateTransaction', transaction).then(function() {
