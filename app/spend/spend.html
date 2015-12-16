@@ -1,56 +1,56 @@
-<div class="alert alert-danger" ng-hide="isAdmin">
+<div class="alert alert-danger" ng-hide="vm.isAdmin">
     <h2>You must <a  href="/login">login.</a></h2>
 </div>
-<div ng-show="isAdmin">
+<div ng-show="vm.isAdmin">
     <div class="alert alert-danger" ng-show="error">
-        <h5>{{error}}</h5>
+        <h5>{{vm.error}}</h5>
     </div>
 
     <div class="row well well-sm">
         <div class="col-md-2">
-            Spend: <span class="label label-default" style="font-size: 14px">{{totalAmount | currency}}</span>
+            Spend: <span class="label label-default" style="font-size: 14px">{{vm.spend.totalAmount | currency}}</span>
         </div>
         <div class="col-md-2">
-            Budget: <span class="label label-info" style="font-size: 14px">{{totalBudget | currency}}</span>
+            Budget: <span class="label label-info" style="font-size: 14px">{{vm.spend.totalBudget | currency}}</span>
         </div>
         <div class="col-md-2">
-            Difference: <span class="label label-default" style="font-size: 14px" ng-class="{'label-danger': totalBudget <= 0, 'label-success': totalBudget > 0}">{{totalBudget + totalAmount | currency}}</span>
+            Difference: <span class="label label-default" style="font-size: 14px" ng-class="{'label-danger': totalBudget <= 0, 'label-success': totalBudget > 0}">{{vm.spend.totalBudget + vm.spend.totalAmount | currency}}</span>
         </div>
         <div class="col-md-6 input-group text-right">
             <label for="startDate">Start Date</label>
-            <input style="margin: 10px" type="date" name="startDate" ng-model="startDate" />
+            <input style="margin: 10px" type="date" name="startDate" ng-model="vm.startDate" />
 
             <label for="endDate">End Date</label>
-            <input style="margin: 10px" type="date" name="endDate" ng-model="endDate" />
+            <input style="margin: 10px" type="date" name="endDate" ng-model="vm.endDate" />
 
             <label for="amortizeBudget">Amortize Budget</label>
-            <input style="margin: 10px" type="checkbox" name="amortizeBudget" ng-model="amortizeBudget" />
+            <input style="margin: 10px" type="checkbox" name="amortizeBudget" ng-model="vm.amortizeBudget" />
 
-            <button class="btn btn-primary" ng-click="update()">Update</button>
+            <button class="btn btn-primary" ng-click="vm.activate()">Update</button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-4 donut-chart">
             <br> Budget vs. Spend
-            <canvas id="bar" class="chart chart-bar" chart-data="bardata" chart-labels="barlabels" chart-series="barseries" chart-legend="true">
+            <canvas id="bar" class="chart chart-bar" chart-data="vm.spend.barChart.data" chart-labels="vm.spend.barChart.labels" chart-series="vm.spend.barChart.series" chart-legend="true">
             </canvas>
         </div>
         <div class="col-md-4 donut-chart">
             <br> Spend by Category
-            <canvas id="donut" class="chart chart-doughnut" chart-data="donutdata" chart-labels="donutlabels" chart-legend="true">
+            <canvas id="donut" class="chart chart-doughnut" chart-data="vm.spend.donutChart.data" chart-labels="vm.spend.donutChart.labels" chart-legend="true">
             </canvas>
         </div>
-        <div ng-show="showlineChart" class="col-md-4 donut-chart">
+        <div ng-show="vm.showlineChart" class="col-md-4 donut-chart">
             <br> Spend by Day
-            <canvas id="line" class="chart chart-line" chart-data="linedata" chart-labels="linelabels" chart-series="lineseries" chart-legend="true">
+            <canvas id="line" class="chart chart-line" chart-data="vm.spend.lineChart.data" chart-labels="vm.spend.lineChart.labels" chart-series="vm.spend.lineChart.series" chart-legend="true">
             </canvas>
         </div>
     </div>
 
     <div class="row">
         <table class="table table-bordered">
-            <tr ng-repeat="transaction in transactions | filter: {category: '!'} | orderBy: 'date'">
+            <tr ng-repeat="transaction in vm.spend.transactions | filter: {category: '!'} | orderBy: 'date'">
                 <td>
                     <a href="" ng-click=""><b>{{transaction.date | date}}</b></a>
                 </td>
@@ -67,12 +67,12 @@
                     <div class="input-group">
                         <label for="addToCategory">Add To Category</label>
                         <select ng-model="transaction.newCategory" class="form-control">
-                            <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
+                            <option ng-repeat="cat in vm.spend.categories" value="{{cat.name}}">{{cat.name}}</option>
                         </select>
                     </div>
                     <div class="btn-group" role="group" style="margin-top: 5px">
-                        <button class="btn btn-primary" ng-click="updateTransaction(transaction)">One</button>
-                        <button class="btn btn-secondary" ng-click="addAdvertiser(transaction)">All</button>
+                        <button class="btn btn-primary" ng-click="vm.updateTransaction(transaction)">One</button>
+                        <button class="btn btn-secondary" ng-click="vm.addVendor(transaction)">All</button>
                     </div>
                 </td>
             </tr>
@@ -88,8 +88,8 @@
                 <th>Over/Under</th>
                 <th>Details</th>
             </tr>
-            <tr ng-repeat="category in categories | orderBy: 'amount'">
-                <td style="width:50px"><a href="" ng-click="categoryClick(category)">{{category.name}}</a>
+            <tr ng-repeat="category in vm.spend.categories | orderBy: 'amount'">
+                <td style="width:50px"><a href="" ng-click="vm.categoryClick(category)">{{category.name}}</a>
                 </td>
                 <td style="width:50px">
                     <h4><span class="label label-default">{{category.amount | currency}}</span>
@@ -109,7 +109,7 @@
                             <th>Amount</th>
                             <th>Account</th>
                             <th>Update</th>
-                            <tr ng-repeat="transaction in transactions | filter: {category: category.name} | orderBy: 'amount' : reverse">
+                            <tr ng-repeat="transaction in vm.spend.transactions | filter: {category: category.name} | orderBy: 'amount' : reverse">
                                 <td>
                                     {{transaction.date | date}}
                                 </td>
@@ -126,12 +126,12 @@
                                     <div class="form-inline">
                                         <div class="input-group">
                                             <select ng-model="transaction.newCategory" class="form-control">
-                                                <option ng-repeat="cat in categories" value="{{cat.name}}">{{cat.name}}</option>
+                                                <option ng-repeat="cat in vm.spend.categories" value="{{cat.name}}">{{cat.name}}</option>
                                             </select>
                                         </div>
                                         <div class="btn-group" role="group" style="margin-top: 5px">
-                                            <button class="btn btn-primary" ng-click="updateTransaction(transaction)">One</button>
-                                            <button class="btn btn-secondary" ng-click="updateAdvertiser(transaction)">All</button>
+                                            <button class="btn btn-primary" ng-click="vm.updateTransaction(transaction)">One</button>
+                                            <button class="btn btn-secondary" ng-click="vm.updateVendor(transaction)">All</button>
                                         </div>
                                     </div>
                                 </td>
@@ -146,7 +146,7 @@
         <div class="container">
             <p class="text-muted">
                 <div style="float: right; font-size: 12px; margin-right: 20px">
-                    Last Updated: Ally: {{updated.ally | date : "MMM-dd"}} | Amex: {{updated.amex | date : "MMM-dd"}} | Capital One: {{updated.cp1 | date : "MMM-dd"}}
+                    Last Updated: Ally: {{vm.spend.updated.ally | date : "MMM-dd"}} | Amex: {{vm.spend.updated.amex | date : "MMM-dd"}} | Capital One: {{vm.spend.updated.cp1 | date : "MMM-dd"}}
                 </div>
             </p>
         </div>

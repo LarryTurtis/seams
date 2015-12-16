@@ -5,7 +5,6 @@ var folder,
     path = require('path'),
     bodyParser = require("body-parser"),
     upload = require("./lib/fileUpload.js"),
-    database = require("./lib/database.js"),
     passport = require('passport'),
     finDb = require("./lib/finDb.js"),
     auth = require("./lib/authMethods.js"),
@@ -52,11 +51,8 @@ app.use('/', routes);
 app.use("/", express.static(folder));
 
 /**
- * Product methods.
+ * Upload methods.
  */
-app.post("/api/dbCreate", auth.shouldDeny, database.createRecord);
-app.post("/api/dbDelete", auth.shouldDeny, database.deleteRecord);
-app.post("/api/db", auth.shouldAllow, database.getRecord);
 app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, res) {
     csv.csvTransform(req.headers.destination + "/" + req.file.filename, req.headers.account);
     res.send(req.file);
@@ -65,18 +61,14 @@ app.post("/api/upload", upload.single("avatar"), auth.shouldDeny, function(req, 
 /**
  * Finance methods
  */
-app.post("/api/addAdvertiser", auth.shouldDeny, finDb.addAdvertiser);
-app.post("/api/updateAdvertiser", auth.shouldDeny, finDb.updateAdvertiser);
-app.post("/api/addToBudget", auth.shouldDeny, finDb.addToBudget);
-app.get("/api/getAllAdvertisers", auth.shouldDeny, finDb.getAllAdvertisers);
-app.get("/api/getAllCategories", auth.shouldDeny, finDb.getAllCategories);
-app.get("/api/getBudget", auth.shouldDeny, finDb.getBudget);
-app.get("/api/getTransactions", auth.shouldDeny, finDb.getTransactions);
-app.post("/api/updateTransaction", auth.shouldDeny, finDb.updateTransaction);
-app.post("/api/updateAllTransactions", auth.shouldDeny, finDb.updateAllTransactions);
+app.post("/api/vendor", auth.shouldDeny, finDb.addVendor);
+app.put("/api/vendor", auth.shouldDeny, finDb.updateVendor);
+app.put("/api/budget", auth.shouldDeny, finDb.updateBudget);
+app.get("/api/budget", auth.shouldDeny, finDb.getBudget);
+app.get("/api/transactions", auth.shouldDeny, finDb.getTransactions);
+app.put("/api/transactions", auth.shouldDeny, finDb.updateTransaction);
+app.put("/api/updateAllTransactions", auth.shouldDeny, finDb.updateAllTransactions);
 app.post("/api/deleteAllTransactions", auth.shouldDeny, finDb.deleteAllTransactions);
-app.post("/api/deleteAdvertiser", auth.shouldDeny, finDb.deleteAdvertiser);
-app.post("/api/addCategory", auth.shouldDeny, finDb.addCategory);
 
 
 app.use(function(req, res, next) {
