@@ -42,7 +42,7 @@ module.exports = function(grunt) {
         ngtemplates: {
             seams: {
                 src: 'dist/**/**.html',
-                dest: 'dist/app.js',
+                dest: 'dist/app-module.js',
                 options: {
                     append: true
                 }

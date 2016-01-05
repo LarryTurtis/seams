@@ -96,7 +96,7 @@
                 updated[n.account] = new Date(n.modified) > updated[n.account] ? n.modified : updated[n.account]
 
                 //find any $0 transactions and any transactions in the Transfer category.
-                if (n.amount > 0 || n.category === 'Transfer') {
+                if (n.amount >= 0 || n.category === 'Transfer') {
                     return true;
                 } else {
                     totalAmount += n.amount;
@@ -110,7 +110,6 @@
             });
             var numberOfDays = (selectedDates.endDate - selectedDates.startDate) / 1000 / 60 / 60 / 24
             angular.forEach(budget, function(item) {
-
                 item.amount = amortized ? (item.amount * 12) / 365 * numberOfDays : item.amount;
                 categories.push({
                     name: item.category,

@@ -10,7 +10,7 @@
         $scope.total = 0;
         $scope.isAdmin = seamsAuthService.getAuth();
 
-        $http.get('/api/getBudget').then(function(result) {
+        $http.get('/api/budget').then(function(result) {
             $scope.budget = result.data;
             $scope.budget.push({
                 'category': null,
@@ -25,7 +25,7 @@
             if (!_.last($scope.budget).category) {
                 $scope.budget.pop();
             }
-            $http.post('/api/addToBudget', $scope.budget).then(function() {
+            $http.put('/api/budget', $scope.budget).then(function() {
                 $location.path('/spend')
             });
         }
