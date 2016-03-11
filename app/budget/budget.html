@@ -1,4 +1,5 @@
-<div class="alert alert-danger" ng-hide="isAdmin"><h2>You must <a  href="/login">login.</a></h2></div>
+<div class="alert alert-danger" ng-hide="isAdmin">
+    <h2>You must <a  href="/login">login.</a></h2></div>
 <div ng-show="isAdmin">
     <div class="row">
         <div class="col-md-3 donut-chart">
@@ -6,25 +7,33 @@
             </canvas>
         </div>
     </div>
-<div>Monthly Income: {{income | currency}}</div>
-<div>Total Allocated: {{total | currency}}</div>
-<div>Remainder:<span class="label" ng-class="{'label-danger': income - total < 0, 'label-success': income - total >= 0}">{{income - total | currency}}</span></div>
-<hr /> 
-<label for="Income">Income</label>
-<input type="number" name="Income" ng-model="income" /><br/><br/>
-<table class="table">
-    <tr>
-        <th>Category</th>
-        <th>Amount</th>
-    </tr>
-    <tr ng-repeat="item in budget">
-        <td>
-            <input type="text" name="category" ng-model="item.category" />
-        </td>
-        <td>
-            <input type="text" name="amount" ng-model="item.amount" />
-        </td>
-    </tr>
-</table>
-<button ng-click="update()">Update Budget</button>
+    <div>Monthly Income: {{income | currency}}</div>
+    <div>Total Allocated: {{total | currency}}</div>
+    <div>Remainder:<span class="label" ng-class="{'label-danger': income - total < 0, 'label-success': income - total >= 0}">{{income - total | currency}}</span></div>
+    <hr />
+    <label for="Income">Income</label>
+    <input type="number" name="Income" ng-model="income" />
+    <br/>
+    <br/>
+    <table class="table">
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Subcategories</th>
+        </tr>
+        <tr ng-repeat="item in budget">
+            <td>
+                <input type="text" name="category" ng-model="item.category" />
+            </td>
+            <td>
+                <input type="text" name="amount" ng-model="item.amount" />
+            </td>
+            <td>
+                <li ng-repeat="cat in item.subCategories">
+                <input type="text" name="subCategory" ng-model="cat.name" />                            
+                </li>
+            </td>
+        </tr>
+    </table>
+    <button ng-click="update()">Update Budget</button>
 </div>

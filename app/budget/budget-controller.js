@@ -18,7 +18,9 @@
             });
             $scope.budget.forEach(function(item) {
                 $scope.total += item.amount;
+                item.subCategories && item.subCategories.push({name: ""});
             })
+            console.log($scope.budget);
         });
 
         function update() {

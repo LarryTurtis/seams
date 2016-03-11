@@ -31,7 +31,8 @@
         function updateVendor(transaction) {
             var vendor = {
                 name: transaction.description,
-                category: transaction.newCategory
+                category: transaction.newCategory,
+                subCategory: transaction.subCategory
             }
             return VendorResource.update(vendor)
                 .$promise
@@ -43,7 +44,8 @@
         function addVendor(transaction) {
             var vendor = {
                 name: transaction.description,
-                category: transaction.newCategory
+                category: transaction.newCategory,
+                subCategory: transaction.subCategory
             }
             return VendorResource.create(vendor)
                 .$promise
@@ -57,7 +59,8 @@
                 reference: transaction.reference,
                 description: transaction.description,
                 account: transaction.account,
-                category: transaction.newCategory
+                category: transaction.newCategory,
+                subCategory: transaction.subCategory
             }
             return TransactionResource.update(data)
                 .$promise
@@ -69,7 +72,8 @@
         function updateAllTransactionsForVendor(transaction) {
             var data = {
                 description: transaction.description,
-                category: transaction.newCategory
+                category: transaction.newCategory,
+                subCategory: transaction.subCategory
             }
             return TransactionResource.updateAll(data)
                 .$promise

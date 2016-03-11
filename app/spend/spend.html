@@ -5,7 +5,6 @@
     <div class="alert alert-danger" ng-show="error">
         <h5>{{vm.error}}</h5>
     </div>
-
     <div class="row well well-sm">
         <div class="col-md-2">
             Spend: <span class="label label-default" style="font-size: 14px">{{vm.spend.totalAmount | currency}}</span>
@@ -19,17 +18,13 @@
         <div class="col-md-6 input-group text-right">
             <label for="startDate">Start Date</label>
             <input style="margin: 10px" type="date" name="startDate" ng-model="vm.startDate" />
-
             <label for="endDate">End Date</label>
             <input style="margin: 10px" type="date" name="endDate" ng-model="vm.endDate" />
-
             <label for="amortizeBudget">Amortize Budget</label>
             <input style="margin: 10px" type="checkbox" name="amortizeBudget" ng-model="vm.amortizeBudget" />
-
             <button class="btn btn-primary" ng-click="vm.activate()">Update</button>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-4 donut-chart">
             <br> Budget vs. Spend
@@ -47,7 +42,6 @@
             </canvas>
         </div>
     </div>
-
     <div class="row">
         <table class="table table-bordered">
             <tr ng-repeat="transaction in vm.spend.transactions | filter: {category: '!'} | orderBy: 'date'">
@@ -69,6 +63,9 @@
                         <select ng-model="transaction.newCategory" class="form-control">
                             <option ng-repeat="cat in vm.spend.categories" value="{{cat.name}}">{{cat.name}}</option>
                         </select>
+                        <select ng-model="transaction.subCategory" class="form-control">
+                            <option ng-repeat="subcat in cat" value="{{subcat.name}}">{{subcat.name}}</option>
+                        </select>
                     </div>
                     <div class="btn-group" role="group" style="margin-top: 5px">
                         <button class="btn btn-primary" ng-click="vm.updateTransaction(transaction)">One</button>
@@ -77,9 +74,6 @@
                 </td>
             </tr>
         </table>
-
-
-
         <table class="table">
             <tr>
                 <th>Name</th>
